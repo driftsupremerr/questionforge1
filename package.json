@@ -1,0 +1,33 @@
+{
+  "name": "questionforge",
+  "version": "2.0.0",
+  "description": "Modern AI-Powered JEE Main & Advanced Exam Preparation Platform featuring authentic NTA CBT Simulation, Multimodal Document OCR Scanner, KaTeX mathematical typesetting, and Cloudflare Edge deployment.",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "deploy": "wrangler pages deploy public",
+    "deploy:ci": "wrangler pages deploy public --project-name=questionforge"
+  },
+  "keywords": [
+    "jee",
+    "jee-mains",
+    "jee-advanced",
+    "nta-cbt",
+    "exam-simulator",
+    "katex",
+    "gemini-ai",
+    "pdf-ocr",
+    "question-bank",
+    "cloudflare-pages"
+  ],
+  "author": "QuestionForge Team",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.80.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

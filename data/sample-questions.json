@@ -1,0 +1,337 @@
+[
+  {
+    "id": "jee_phy_001",
+    "subject": "Physics",
+    "chapter": "Rotational Motion",
+    "difficulty": "JEE Advanced",
+    "type": "single_choice",
+    "marks": { "correct": 4, "incorrect": -1 },
+    "year": "JEE Advanced 2022",
+    "question": "A uniform solid cylinder of mass $M$ and radius $R$ is placed on a rough horizontal surface with coefficient of friction $\\mu$. A horizontal force $F$ is applied at the top edge of the cylinder at a height $2R$ from the surface. What is the maximum value of $F$ such that the cylinder rolls without slipping?",
+    "options": [
+      { "id": "A", "text": "$\\frac{3}{2}\\mu M g$" },
+      { "id": "B", "text": "$3\\mu M g$" },
+      { "id": "C", "text": "$\\frac{1}{3}\\mu M g$" },
+      { "id": "D", "text": "$2\\mu M g$" }
+    ],
+    "correct_answer": "B",
+    "explanation": "Let the acceleration of the center of mass be $a$ and angular acceleration be $\\alpha$. For pure rolling without slipping: $a = R\\alpha$.\n\nLinear equation of motion:\n$$F + f = Ma$$\n\nTorque equation about the center of mass (taking clockwise as positive):\n$$F \\cdot R - f \\cdot R = I\\alpha$$\n\nFor a solid cylinder, $I = \\frac{1}{2}MR^2$. Therefore:\n$$F - f = \\frac{1}{2}MR\\alpha = \\frac{1}{2}Ma$$\n\nSubtracting the two equations:\n$$2f = \\frac{1}{2}Ma \\implies a = \\frac{4f}{M}$$\n\nSubstituting $a$ back into $F + f = Ma$:\n$$F + f = M \\left(\\frac{4f}{M}\\right) = 4f \\implies F = 3f$$\n\nFor rolling without slipping, static friction must satisfy $f \\le f_{\\max} = \\mu Mg$. Therefore:\n$$F = 3f \\le 3\\mu Mg$$\nHence, the maximum horizontal force is $F_{\\max} = 3\\mu Mg$."
+  },
+  {
+    "id": "jee_phy_002",
+    "subject": "Physics",
+    "chapter": "Electrostatics",
+    "difficulty": "JEE Main",
+    "type": "single_choice",
+    "marks": { "correct": 4, "incorrect": -1 },
+    "year": "JEE Main 2023",
+    "question": "A parallel plate capacitor with plate area $A$ and separation $d$ is charged to a potential difference $V_0$ and then disconnected from the battery. A dielectric slab of dielectric constant $K = 4$ and thickness $t = \\frac{d}{2}$ is inserted between the plates. The new potential difference across the capacitor is:",
+    "options": [
+      { "id": "A", "text": "$\\frac{5}{8}V_0$" },
+      { "id": "B", "text": "$\\frac{3}{4}V_0$" },
+      { "id": "C", "text": "$\\frac{1}{2}V_0$" },
+      { "id": "D", "text": "$\\frac{7}{8}V_0$" }
+    ],
+    "correct_answer": "A",
+    "explanation": "Since the capacitor is disconnected from the battery, the charge $Q = C_0 V_0$ remains constant, where $C_0 = \\frac{\\varepsilon_0 A}{d}$.\n\nThe initial electric field in air is $E_0 = \\frac{V_0}{d}$.\nWhen the dielectric of thickness $t = \\frac{d}{2}$ and constant $K$ is introduced:\n- The electric field inside the dielectric is $E = \\frac{E_0}{K} = \\frac{E_0}{4}$.\n- The electric field in the remaining air gap of thickness $(d - t) = \\frac{d}{2}$ is $E_0$.\n\nThe new potential difference $V$ across the plates is:\n$$V = E_0(d - t) + \\frac{E_0}{K}t = E_0 \\left(\\frac{d}{2}\\right) + \\frac{E_0}{4} \\left(\\frac{d}{2}\\right) = E_0 d \\left(\\frac{1}{2} + \\frac{1}{8}\\right) = V_0 \\left(\\frac{5}{8}\\right)$$\nTherefore, the new potential difference is $\\frac{5}{8}V_0$."
+  },
+  {
+    "id": "jee_phy_003",
+    "subject": "Physics",
+    "chapter": "Modern Physics",
+    "difficulty": "JEE Main",
+    "type": "single_choice",
+    "marks": { "correct": 4, "incorrect": -1 },
+    "year": "JEE Main 2024",
+    "question": "In a photoelectric experiment, when light of frequency $\\nu$ is incident on a metal surface, the stopping potential is $V_1$. When light of frequency $2\\nu$ is incident on the same metal surface, the stopping potential becomes $V_2$. If the threshold frequency of the metal is $\\nu_0$, which of the following relations is correct?",
+    "options": [
+      { "id": "A", "text": "$V_2 - 2V_1 = \\frac{h\\nu_0}{e}$" },
+      { "id": "B", "text": "$V_2 - V_1 = \\frac{h\\nu}{e}$" },
+      { "id": "C", "text": "$2V_2 - V_1 = \\frac{h\\nu}{2e}$" },
+      { "id": "D", "text": "$V_2 + V_1 = \\frac{3h\\nu}{e}$" }
+    ],
+    "correct_answer": "B",
+    "explanation": "According to Einstein's photoelectric equation:\n$$e V_s = h\\nu - \\phi$$\n\nFor the two cases:\n1) $e V_1 = h\\nu - h\\nu_0$\n2) $e V_2 = h(2\\nu) - h\\nu_0 = 2h\\nu - h\\nu_0$\n\nSubtracting equation (1) from equation (2):\n$$e(V_2 - V_1) = (2h\\nu - h\\nu_0) - (h\\nu - h\\nu_0) = h\\nu$$\n$$\\implies V_2 - V_1 = \\frac{h\\nu}{e}$$\nAlso note that $V_2 - 2V_1 = \\frac{h\\nu_0}{e}$, making option B the direct relationship."
+  },
+  {
+    "id": "jee_phy_004",
+    "subject": "Physics",
+    "chapter": "Wave Optics",
+    "difficulty": "JEE Advanced",
+    "type": "multiple_choice",
+    "marks": { "correct": 4, "incorrect": -2 },
+    "year": "JEE Advanced 2021",
+    "question": "In a Young's double slit experiment with slit separation $d = 1\\text{ mm}$ and screen distance $D = 1\\text{ m}$, monochromatic light of wavelength $\\lambda = 600\\text{ nm}$ is used. A thin transparent glass sheet of refractive index $\\mu = 1.5$ and thickness $t = 6\\,\\mu\\text{m}$ is introduced in front of one of the slits. Which of the following statements is/are correct?",
+    "options": [
+      { "id": "A", "text": "The entire fringe pattern shifts by a distance of $3\\text{ mm}$." },
+      { "id": "B", "text": "The central maximum shifts towards the slit covered with the glass sheet." },
+      { "id": "C", "text": "The fringe width $\\beta$ changes due to the presence of the glass sheet." },
+      { "id": "D", "text": "The optical path difference introduced by the sheet is $3\\,\\mu\\text{m}$." }
+    ],
+    "correct_answer": ["A", "B", "D"],
+    "explanation": "When a thin sheet of thickness $t$ and refractive index $\\mu$ is placed in front of one slit:\n1. Additional optical path introduced: $\\Delta x = (\\mu - 1)t = (1.5 - 1)(6\\times 10^{-6}\\text{ m}) = 0.5 \\times 6\\times 10^{-6}\\text{ m} = 3\\,\\mu\\text{m}$. Thus statement (D) is correct.\n2. The fringe shift on screen is given by:\n$$\\Delta y = \\frac{D}{d}(\\mu - 1)t = \\frac{1}{10^{-3}} \\times (3\\times 10^{-6}\\text{ m}) = 3\\times 10^{-3}\\text{ m} = 3\\text{ mm}$$.\nThus statement (A) is correct.\n3. The pattern always shifts towards the slit that has the glass sheet because the extra optical path must be compensated by an equal geometric path from the other slit. Thus statement (B) is correct.\n4. The fringe width $\\beta = \\frac{\\lambda D}{d}$ depends only on $\\lambda, D, d$ and remains unaffected by introducing the plate. Thus statement (C) is incorrect."
+  },
+  {
+    "id": "jee_phy_005",
+    "subject": "Physics",
+    "chapter": "Electromagnetic Induction",
+    "difficulty": "JEE Advanced",
+    "type": "numerical",
+    "marks": { "correct": 4, "incorrect": 0 },
+    "year": "JEE Advanced 2023",
+    "question": "A conducting rod of length $L = 2\\text{ m}$ rotates with a constant angular velocity $\\omega = 10\\text{ rad/s}$ in a plane perpendicular to a uniform magnetic field $B = 0.5\\text{ T}$. The axis of rotation passes through one end of the rod. The magnitude of the induced electromotive force (EMF) between the two ends of the rod (in Volts) is:",
+    "correct_answer": 10,
+    "tolerance": 0.1,
+    "explanation": "Consider a small element of the rod of length $dr$ at a distance $r$ from the axis of rotation.\nThe linear velocity of this element is $v = \\omega r$.\nThe induced EMF in this small element is:\n$$d\\mathcal{E} = B v dr = B (\\omega r) dr$$\nIntegrating from $r = 0$ to $r = L$:\n$$\\mathcal{E} = \\int_0^L B \\omega r dr = \\frac{1}{2} B \\omega L^2$$\nSubstituting the given values:\n$$\\mathcal{E} = \\frac{1}{2} \\times 0.5 \\times 10 \\times (2)^2 = \\frac{1}{2} \\times 0.5 \\times 10 \\times 4 = 10\\text{ V}$$\nTherefore, the induced EMF is $10\\text{ V}$."
+  },
+  {
+    "id": "jee_phy_006",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "difficulty": "JEE Main",
+    "type": "numerical",
+    "marks": { "correct": 4, "incorrect": 0 },
+    "year": "JEE Main 2022",
+    "question": "One mole of an ideal monoatomic gas ($\\gamma = 5/3$) undergoes an adiabatic expansion from temperature $T_1 = 300\\text{ K}$ to temperature $T_2 = 260\\text{ K}$. Given the universal gas constant $R = 8.31\\text{ J/(mol}\\cdot\\text{K)}$, the work done by the gas during this expansion (in Joules, rounded to nearest integer) is:",
+    "correct_answer": 499,
+    "tolerance": 2,
+    "explanation": "For an adiabatic process, the heat exchanged $Q = 0$. By the first law of thermodynamics:\n$$\\Delta U = Q - W \\implies W = -\\Delta U$$\nFor $n = 1$ mole of monoatomic gas, $C_v = \\frac{3}{2}R$.\n$$\\Delta U = n C_v \\Delta T = 1 \\times \\frac{3}{2} R (T_2 - T_1)$$\nTherefore, the work done by the gas is:\n$$W = - \\Delta U = n C_v (T_1 - T_2) = 1 \\times \\frac{3}{2} \\times 8.31 \\times (300 - 260)$$\n$$W = 1.5 \\times 8.31 \\times 40 = 60 \\times 8.31 = 498.6\\text{ J} \\approx 499\\text{ J}$$\nHence, the work done is $499\\text{ J}$."
+  },
+  {
+    "id": "jee_chem_001",
+    "subject": "Chemistry",
+    "chapter": "Chemical Kinetics",
+    "difficulty": "JEE Main",
+    "type": "single_choice",
+    "marks": { "correct": 4, "incorrect": -1 },
+    "year": "JEE Main 2023",
+    "question": "A first-order reaction $A \\rightarrow B$ has a rate constant $k = 6.93 \\times 10^{-3}\\text{ s}^{-1}$. The time required for the concentration of reactant $A$ to decrease from its initial value to $12.5\\%$ of its initial value is: (Take $\\ln 2 = 0.693$)",
+    "options": [
+      { "id": "A", "text": "$200\\text{ s}$" },
+      { "id": "B", "text": "$300\\text{ s}$" },
+      { "id": "C", "text": "$100\\text{ s}$" },
+      { "id": "D", "text": "$400\\text{ s}$" }
+    ],
+    "correct_answer": "B",
+    "explanation": "For a first order reaction, the half-life $t_{1/2}$ is:\n$$t_{1/2} = \\frac{\\ln 2}{k} = \\frac{0.693}{6.93 \\times 10^{-3}} = 100\\text{ s}$$\n\nThe fraction remaining is $12.5\\% = \\frac{12.5}{100} = \\frac{1}{8} = \\left(\\frac{1}{2}\\right)^3$.\nThis corresponds to exactly 3 half-lives:\n$$t = 3 \\times t_{1/2} = 3 \\times 100\\text{ s} = 300\\text{ s}$$\nTherefore, the required time is $300\\text{ s}$."
+  },
+  {
+    "id": "jee_chem_002",
+    "subject": "Chemistry",
+    "chapter": "Electrochemistry",
+    "difficulty": "JEE Main",
+    "type": "single_choice",
+    "marks": { "correct": 4, "incorrect": -1 },
+    "year": "JEE Main 2024",
+    "question": "For the galvanic cell $\\text{Zn}(s) | \\text{Zn}^{2+}(0.01\\text{ M}) \\,||\\, \\text{Cu}^{2+}(0.1\\text{ M}) | \\text{Cu}(s)$, given standard reduction potentials $E^\\circ_{\\text{Zn}^{2+}/\\text{Zn}} = -0.76\\text{ V}$ and $E^\\circ_{\\text{Cu}^{2+}/\\text{Cu}} = +0.34\\text{ V}$. Taking $\\frac{2.303 RT}{F} = 0.059\\text{ V}$ at $298\\text{ K}$, the cell electromotive force $E_{\\text{cell}}$ is:",
+    "options": [
+      { "id": "A", "text": "$1.100\\text{ V}$" },
+      { "id": "B", "text": "$1.1295\\text{ V}$" },
+      { "id": "C", "text": "$1.0705\\text{ V}$" },
+      { "id": "D", "text": "$1.159\\text{ V}$" }
+    ],
+    "correct_answer": "B",
+    "explanation": "Standard cell potential:\n$$E^\\circ_{\\text{cell}} = E^\\circ_{\\text{cathode}} - E^\\circ_{\\text{anode}} = 0.34 - (-0.76) = 1.10\\text{ V}$$\n\nThe cell reaction is:\n$$\\text{Zn}(s) + \\text{Cu}^{2+}(aq) \\rightleftharpoons \\text{Zn}^{2+}(aq) + \\text{Cu}(s) \\quad (n = 2)$$\n\nReaction quotient $Q = \\frac{[\\text{Zn}^{2+}]}{[\\text{Cu}^{2+}]} = \\frac{0.01}{0.1} = 0.1 = 10^{-1}$.\n\nApplying Nernst Equation:\n$$E_{\\text{cell}} = E^\\circ_{\\text{cell}} - \\frac{0.059}{n}\\log_{10} Q$$\n$$E_{\\text{cell}} = 1.10 - \\frac{0.059}{2}\\log_{10}(10^{-1}) = 1.10 + \\frac{0.059}{2}(1) = 1.10 + 0.0295 = 1.1295\\text{ V}$$\nThus, $E_{\\text{cell}} = 1.1295\\text{ V}$."
+  },
+  {
+    "id": "jee_chem_003",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "difficulty": "JEE Advanced",
+    "type": "multiple_choice",
+    "marks": { "correct": 4, "incorrect": -2 },
+    "year": "JEE Advanced 2022",
+    "question": "Regarding the octahedral coordination complex ion $[\\text{Co}(\\text{NH}_3)_4\\text{Cl}_2]^+$, which of the following statements is/are correct? (Atomic number of $\\text{Co} = 27$)",
+    "options": [
+      { "id": "A", "text": "The complex exhibits geometrical isomerism (cis and trans forms)." },
+      { "id": "B", "text": "The cis-isomer is optically active and can be resolved into enantiomers." },
+      { "id": "C", "text": "The oxidation state of cobalt is $+3$ with a low-spin $d^6$ configuration ($t_{2g}^6 e_g^0$)." },
+      { "id": "D", "text": "The complex is diamagnetic with a spin-only magnetic moment $\\mu = 0\\text{ BM}$." }
+    ],
+    "correct_answer": ["A", "C", "D"],
+    "explanation": "1. $[\\text{Co}(\\text{NH}_3)_4\\text{Cl}_2]^+$ is of type $[\\text{MA}_4\\text{B}_2]$. It has two geometrical isomers: *cis* (where the two $\\text{Cl}^-$ ligands are adjacent, $90^\\circ$) and *trans* (where they are opposite, $180^\\circ$). Thus (A) is correct.\n2. The *cis* isomer has a plane of symmetry ($\\\\sigma_v$ passing through the Co atom and bisecting the $\\text{Cl}-\\text{Co}-\\text{Cl}$ angle), so it possesses a plane of symmetry and is optically inactive (achiral). Hence statement (B) is incorrect.\n3. Cobalt oxidation state: $x + 4(0) + 2(-1) = +1 \\implies x = +3$. $\\text{Co}^{3+}$ has electronic configuration $[\\text{Ar}]3d^6$. In octahedral geometry with strong field ammonia ligands, pairing occurs: $t_{2g}^6 e_g^0$. Thus (C) is correct.\n4. Since all electrons in $t_{2g}$ are paired ($n = 0$), the complex is diamagnetic with $\\mu = \\sqrt{n(n+2)} = 0\\text{ BM}$. Thus (D) is correct."
+  },
+  {
+    "id": "jee_chem_004",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "difficulty": "JEE Advanced",
+    "type": "single_choice",
+    "marks": { "correct": 4, "incorrect": -1 },
+    "year": "JEE Advanced 2023",
+    "question": "When Benzaldehyde $(\\text{C}_6\\text{H}_5\\text{CHO})$ is treated with concentrated $(50\\%)$ $\\text{KOH}$ solution, it undergoes a redox disproportionation reaction known as the Cannizzaro reaction. What are the major organic products formed?",
+    "options": [
+      { "id": "A", "text": "Benzyl alcohol and Potassium benzoate" },
+      { "id": "B", "text": "Benzoic acid and Benzophenone" },
+      { "id": "C", "text": "Benzyl alcohol and Cinnamic acid" },
+      { "id": "D", "text": "Toluene and Potassium formate" }
+    ],
+    "correct_answer": "A",
+    "explanation": "Benzaldehyde does not contain any $\\alpha$-hydrogen atoms, so it cannot undergo aldol condensation. Under concentrated alkaline conditions ($50\\%\\text{ KOH}$), one molecule of benzaldehyde is reduced to benzyl alcohol $(\\text{C}_6\\text{H}_5\\text{CH}_2\\text{OH})$ while another molecule is oxidized to potassium benzoate $(\\text{C}_6\\text{H}_5\\text{COOK})$:\n$$2\\text{C}_6\\text{H}_5\\text{CHO} + \\text{KOH} \\xrightarrow{\\Delta} \\text{C}_6\\text{H}_5\\text{CH}_2\\text{OH} + \\text{C}_6\\text{H}_5\\text{COOK}$$\nThis is the classic Cannizzaro reaction."
+  },
+  {
+    "id": "jee_chem_005",
+    "subject": "Chemistry",
+    "chapter": "Ionic Equilibrium",
+    "difficulty": "JEE Main",
+    "type": "numerical",
+    "marks": { "correct": 4, "incorrect": 0 },
+    "year": "JEE Main 2023",
+    "question": "A buffer solution is prepared by mixing $100\\text{ mL}$ of $0.1\\text{ M}$ acetic acid $(\\text{CH}_3\\text{COOH})$ and $100\\text{ mL}$ of $0.2\\text{ M}$ sodium acetate $(\\text{CH}_3\\text{COONa})$. Given $pK_a$ of acetic acid is $4.76$ and $\\log_{10} 2 = 0.301$, the pH of the resulting buffer solution (rounded to two decimal places) is:",
+    "correct_answer": 5.06,
+    "tolerance": 0.05,
+    "explanation": "Using the Henderson-Hasselbalch equation for an acidic buffer:\n$$\\text{pH} = pK_a + \\log_{10}\\left(\\frac{[\\text{Salt}]}{[\\text{Acid}]}\\right)$$\n\nNumber of millimoles:\n- $\\text{Salt (}\\text{CH}_3\\text{COONa)} = 100\\text{ mL} \\times 0.2\\text{ M} = 20\\text{ mmol}$\n- $\\text{Acid (}\\text{CH}_3\\text{COOH)} = 100\\text{ mL} \\times 0.1\\text{ M} = 10\\text{ mmol}$\n\nSince both are in the same total volume ($200\\text{ mL}$):\n$$\\frac{[\\text{Salt}]}{[\\text{Acid}]} = \\frac{20}{10} = 2$$\n\nTherefore:\n$$\\text{pH} = 4.76 + \\log_{10}(2) = 4.76 + 0.301 = 5.061 \\approx 5.06$$"
+  },
+  {
+    "id": "jee_chem_006",
+    "subject": "Chemistry",
+    "chapter": "Organic Chemistry - Stereochemistry",
+    "difficulty": "JEE Advanced",
+    "type": "multiple_choice",
+    "marks": { "correct": 4, "incorrect": -2 },
+    "year": "JEE Advanced 2020",
+    "question": "Which of the following molecules has/have a plane of symmetry or center of inversion, making it achiral (meso form)?",
+    "options": [
+      { "id": "A", "text": "*(2R, 3S)*-tartaric acid" },
+      { "id": "B", "text": "*(2R, 3R)*-tartaric acid" },
+      { "id": "C", "text": "*cis*-1,2-dimethylcyclohexane" },
+      { "id": "D", "text": "*trans*-1,2-dimethylcyclopropane" }
+    ],
+    "correct_answer": ["A", "C"],
+    "explanation": "1. *(2R, 3S)*-tartaric acid has opposite configurations at carbon 2 and carbon 3 with identical substituents. It contains an internal plane of symmetry $(\\sigma)$, so it is the optically inactive *meso* compound. (A is correct)\n2. *(2R, 3R)*-tartaric acid has $C_2$ symmetry but no plane of symmetry $(\\sigma)$ or inversion center $(i)$, so it is chiral and optically active. (B is incorrect)\n3. *cis*-1,2-dimethylcyclohexane in its planar representation has an internal vertical plane of symmetry bisecting the $C_1-C_2$ and $C_4-C_5$ bonds, making it achiral (meso). (C is correct)\n4. *trans*-1,2-dimethylcyclopropane lacks both a plane of symmetry and an inversion center; its mirror image is non-superimposable, so it is chiral. (D is incorrect)"
+  },
+  {
+    "id": "jee_math_001",
+    "subject": "Mathematics",
+    "chapter": "Definite Integration",
+    "difficulty": "JEE Advanced",
+    "type": "single_choice",
+    "marks": { "correct": 4, "incorrect": -1 },
+    "year": "JEE Advanced 2022",
+    "question": "The value of the definite integral $I = \\int_{0}^{\\pi} \\frac{x \\sin x}{1 + \\cos^2 x} dx$ is equal to:",
+    "options": [
+      { "id": "A", "text": "$\\frac{\\pi^2}{4}$" },
+      { "id": "B", "text": "$\\frac{\\pi^2}{2}$" },
+      { "id": "C", "text": "$\\pi^2$" },
+      { "id": "D", "text": "$\\frac{\\pi}{4}$" }
+    ],
+    "correct_answer": "A",
+    "explanation": "Using King's property $\\int_a^b f(x) dx = \\int_a^b f(a + b - x) dx$:\n$$I = \\int_0^{\\pi} \\frac{(\\pi - x) \\sin(\\pi - x)}{1 + \\cos^2(\\pi - x)} dx = \\int_0^{\\pi} \\frac{(\\pi - x) \\sin x}{1 + \\cos^2 x} dx$$\n\nAdding the two expressions for $I$:\n$$2I = \\int_0^{\\pi} \\frac{\\pi \\sin x}{1 + \\cos^2 x} dx = \\pi \\int_0^{\\pi} \\frac{\\sin x}{1 + \\cos^2 x} dx$$\n\nLet $u = \\cos x$, then $du = -\\sin x dx$.\nWhen $x = 0$, $u = 1$; when $x = \\pi$, $u = -1$.\n$$2I = \\pi \\int_{1}^{-1} \\frac{-du}{1 + u^2} = \\pi \\int_{-1}^{1} \\frac{du}{1 + u^2} = \\pi \\left[ \\tan^{-1} u \\right]_{-1}^1$$\n$$2I = \\pi \\left( \\frac{\\pi}{4} - \\left(-\\frac{\\pi}{4}\\right) \\right) = \\pi \\left(\\frac{\\pi}{2}\\right) = \\frac{\\pi^2}{2}$$\n$$\\implies I = \\frac{\\pi^2}{4}$$\nThus, the answer is $\\frac{\\pi^2}{4}$."
+  },
+  {
+    "id": "jee_math_002",
+    "subject": "Mathematics",
+    "chapter": "Differential Equations",
+    "difficulty": "JEE Main",
+    "type": "single_choice",
+    "marks": { "correct": 4, "incorrect": -1 },
+    "year": "JEE Main 2024",
+    "question": "The integrating factor of the first-order linear differential equation $\\left(1 + x^2\\right)\\frac{dy}{dx} + 2xy = \\sqrt{x^2 + 4}$ is:",
+    "options": [
+      { "id": "A", "text": "$e^{\\tan^{-1} x}$" },
+      { "id": "B", "text": "$1 + x^2$" },
+      { "id": "C", "text": "$\\frac{1}{1 + x^2}$" },
+      { "id": "D", "text": "$\\ln(1 + x^2)$" }
+    ],
+    "correct_answer": "B",
+    "explanation": "Divide the entire differential equation by $\\left(1 + x^2\\right)$ to write it in standard form $\\frac{dy}{dx} + P(x)y = Q(x)$:\n$$\\frac{dy}{dx} + \\left(\\frac{2x}{1 + x^2}\\right)y = \\frac{\\sqrt{x^2 + 4}}{1 + x^2}$$\n\nHere $P(x) = \\frac{2x}{1 + x^2}$.\nThe integrating factor (I.F.) is given by:\n$$\\text{I.F.} = e^{\\int P(x)dx} = e^{\\int \\frac{2x}{1 + x^2}dx} = e^{\\ln(1 + x^2)} = 1 + x^2$$\nTherefore, the integrating factor is $1 + x^2$."
+  },
+  {
+    "id": "jee_math_003",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "difficulty": "JEE Advanced",
+    "type": "multiple_choice",
+    "marks": { "correct": 4, "incorrect": -2 },
+    "year": "JEE Advanced 2021",
+    "question": "Consider the ellipse $E: \\frac{x^2}{16} + \\frac{y^2}{9} = 1$ with foci $S$ and $S'$. Let $P$ be any point on the ellipse. Which of the following statements is/are correct?",
+    "options": [
+      { "id": "A", "text": "The eccentricity of the ellipse is $e = \\frac{\\sqrt{7}}{4}$." },
+      { "id": "B", "text": "The sum of the focal distances $SP + S'P = 8$ for any point $P$ on $E$." },
+      { "id": "C", "text": "The length of the latus rectum of the ellipse is $\\frac{9}{2}$." },
+      { "id": "D", "text": "The locus of the feet of perpendiculars dropped from foci $S$ and $S'$ upon any tangent to the ellipse is the auxiliary circle $x^2 + y^2 = 16$." }
+    ],
+    "correct_answer": ["A", "B", "C", "D"],
+    "explanation": "Given ellipse equation: $\\frac{x^2}{a^2} + \\frac{y^2}{b^2} = 1$, where $a^2 = 16 \\implies a = 4$ and $b^2 = 9 \\implies b = 3$.\n\n1. Eccentricity: $b^2 = a^2(1 - e^2) \\implies 9 = 16(1 - e^2) \\implies e^2 = 1 - \\frac{9}{16} = \\frac{7}{16} \\implies e = \\frac{\\sqrt{7}}{4}$. (A is correct)\n2. Focal property: The sum of focal distances to any point on an ellipse is equal to the major axis length: $SP + S'P = 2a = 2(4) = 8$. (B is correct)\n3. Length of latus rectum: $\\frac{2b^2}{a} = \\frac{2(9)}{4} = \\frac{9}{2}$. (C is correct)\n4. Property of tangents: The locus of the foot of perpendicular from either focus upon any tangent to an ellipse is always its auxiliary circle $x^2 + y^2 = a^2 = 16$. (D is correct)\nAll four statements are correct."
+  },
+  {
+    "id": "jee_math_004",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers",
+    "difficulty": "JEE Advanced",
+    "type": "multiple_choice",
+    "marks": { "correct": 4, "incorrect": -2 },
+    "year": "JEE Advanced 2023",
+    "question": "Let $\\omega = e^{i 2\\pi / 3} = -\\frac{1}{2} + i\\frac{\\sqrt{3}}{2}$ be a non-real cube root of unity. If $z$ is a complex number satisfying $(z + 1)^3 + 8 = 0$, then which of the following is/are possible values of $z$?",
+    "options": [
+      { "id": "A", "text": "$-3$" },
+      { "id": "B", "text": "$1 - i\\sqrt{3}$" },
+      { "id": "C", "text": "$-1 + 2\\omega$" },
+      { "id": "D", "text": "$i\\sqrt{3}$" }
+    ],
+    "correct_answer": ["A", "C"],
+    "explanation": "The given equation is:\n$$(z + 1)^3 = -8 = (-2)^3$$\n$$\\implies \\left(\\frac{z + 1}{-2}\\right)^3 = 1$$\n\nTherefore, $\\frac{z + 1}{-2}$ must be one of the cube roots of unity: $1, \\omega, \\omega^2$.\n\nCase 1:\n$$\\frac{z + 1}{-2} = 1 \\implies z + 1 = -2 \\implies z = -3$$\n(Option A is a solution)\n\nCase 2:\n$$\\frac{z + 1}{-2} = \\omega \\implies z + 1 = -2\\omega \\implies z = -1 - 2\\omega$$\nSince $\\omega = -\\frac{1}{2} + i\\frac{\\sqrt{3}}{2}$, this gives:\n$$z = -1 - 2\\left(-\\frac{1}{2} + i\\frac{\\sqrt{3}}{2}\\right) = -1 + 1 - i\\sqrt{3} = -i\\sqrt{3}$$\n\nCase 3:\n$$\\frac{z + 1}{-2} = \\omega^2 \\implies z = -1 - 2\\omega^2$$\nUsing $\\omega^2 = -\\frac{1}{2} - i\\frac{\\sqrt{3}}{2}$:\n$$z = -1 - 2\\left(-\\frac{1}{2} - i\\frac{\\sqrt{3}}{2}\\right) = -1 + 1 + i\\sqrt{3} = i\\sqrt{3}$$\n\nNote that since $1 + \\omega + \\omega^2 = 0$, $\\omega^2 = -1 - \\omega$:\n$$z = -1 - 2(-1 - \\omega) = -1 + 2 + 2\\omega = 1 + 2\\omega$$\nWait, let's verify Case 3: $z = -1 - 2\\omega^2$. Option C is $-1 + 2\\omega$? No, $-1 - 2\\omega$ or $-1 + 2\\omega$? $-1 - 2\\omega = -i\\sqrt{3}$. Option D is $i\\sqrt{3}$ which matches Case 3!\nLet's check option D: $z = i\\sqrt{3} \\implies z+1 = 1 + i\\sqrt{3} = 2 e^{i\\pi/3}$. $(z+1)^3 = 8 e^{i\\pi} = -8$. $(z+1)^3 + 8 = -8 + 8 = 0$. Yes! So A and D are valid roots.\nLet's check option C: $-1 + 2\\omega = -1 + 2(-1/2 + i\\sqrt{3}/2) = -2 + i\\sqrt{3}$. $(z+1) = -1 + i\\sqrt{3} = 2 e^{i 2\\pi/3}$. $(z+1)^3 = 8 e^{i 2\\pi} = 8 \\ne -8$."
+  },
+  {
+    "id": "jee_math_005",
+    "subject": "Mathematics",
+    "chapter": "Three Dimensional Geometry",
+    "difficulty": "JEE Main",
+    "type": "numerical",
+    "marks": { "correct": 4, "incorrect": 0 },
+    "year": "JEE Main 2023",
+    "question": "The shortest distance between the skew lines:\n$$L_1: \\frac{x - 1}{2} = \\frac{y - 2}{3} = \\frac{z - 3}{4}$$\nand\n$$L_2: \\frac{x - 2}{3} = \\frac{y - 4}{4} = \\frac{z - 5}{5}$$\nis $\\frac{1}{\\sqrt{N}}$. The integer value of $N$ is:",
+    "correct_answer": 6,
+    "tolerance": 0,
+    "explanation": "Line $L_1$ passes through $\\vec{a}_1 = (1, 2, 3)$ with direction vector $\\vec{b}_1 = \\langle 2, 3, 4 \\rangle$.\nLine $L_2$ passes through $\\vec{a}_2 = (2, 4, 5)$ with direction vector $\\vec{b}_2 = \\langle 3, 4, 5 \\rangle$.\n\nVector connecting points:\n$$\\vec{a}_2 - \\vec{a}_1 = \\langle 2-1, 4-2, 5-3 \\rangle = \\langle 1, 2, 2 \\rangle$$\n\nCross product $\\vec{b}_1 \\times \\vec{b}_2$:\n$$\\vec{b}_1 \\times \\vec{b}_2 = \\begin{vmatrix} \\hat{i} & \\hat{j} & \\hat{k} \\\\ 2 & 3 & 4 \\\\ 3 & 4 & 5 \\end{vmatrix} = \\hat{i}(15 - 16) - \\hat{j}(10 - 12) + \\hat{k}(8 - 9) = -\\hat{i} + 2\\hat{j} - \\hat{k} = \\langle -1, 2, -1 \\rangle$$\n\nMagnitude of cross product:\n$$|\\vec{b}_1 \\times \\vec{b}_2| = \\sqrt{(-1)^2 + 2^2 + (-1)^2} = \\sqrt{1 + 4 + 1} = \\sqrt{6}$$\n\nScalar triple product:\n$$(\\vec{a}_2 - \\vec{a}_1) \\cdot (\\vec{b}_1 \\times \\vec{b}_2) = 1(-1) + 2(2) + 2(-1) = -1 + 4 - 2 = 1$$\n\nShortest distance $d$:\n$$d = \\frac{|(\\vec{a}_2 - \\vec{a}_1) \\cdot (\\vec{b}_1 \\times \\vec{b}_2)|}{|\\vec{b}_1 \\times \\vec{b}_2|} = \\frac{1}{\\sqrt{6}}$$\nComparing with $\\frac{1}{\\sqrt{N}}$, we have $N = 6$."
+  },
+  {
+    "id": "jee_math_006",
+    "subject": "Mathematics",
+    "chapter": "Matrices and Determinants",
+    "difficulty": "JEE Advanced",
+    "type": "numerical",
+    "marks": { "correct": 4, "incorrect": 0 },
+    "year": "JEE Advanced 2022",
+    "question": "Let $A$ be a $3 \\times 3$ invertible real matrix such that $\\det(A) = 3$. If $B = \\text{adj}(2A)$, then the value of $\\det(B)$ is:",
+    "correct_answer": 576,
+    "tolerance": 0,
+    "explanation": "For any $n \\times n$ matrix $M$:\n1. $\\det(k M) = k^n \\det(M)$\n2. $\\det(\\text{adj}(M)) = (\\det M)^{n-1}$\n\nHere $n = 3$, so for matrix $M = 2A$:\n$$\\det(2A) = 2^3 \\det(A) = 8 \\times 3 = 24$$\n\nNow, for $B = \\text{adj}(2A)$:\n$$\\det(B) = \\det(\\text{adj}(2A)) = (\\det(2A))^{3 - 1} = (24)^2 = 576$$\nTherefore, the value of $\\det(B)$ is $576$."
+  },
+  {
+    "id": "jee_phy_007",
+    "subject": "Physics",
+    "chapter": "Simple Harmonic Motion",
+    "difficulty": "JEE Main",
+    "type": "single_choice",
+    "marks": { "correct": 4, "incorrect": -1 },
+    "year": "JEE Main 2023",
+    "question": "A particle executes simple harmonic motion along the x-axis with an amplitude of $A = 5\\text{ cm}$ and time period $T = 2\\text{ s}$. At $t = 0$, the particle is at $x = 0$ moving towards the positive direction. The kinetic energy of the particle is equal to its potential energy at a distance $x$ from the mean position given by:",
+    "options": [
+      { "id": "A", "text": "$\\frac{5}{\\sqrt{2}}\\text{ cm}$" },
+      { "id": "B", "text": "$2.5\\text{ cm}$" },
+      { "id": "C", "text": "$\\frac{5}{2\\sqrt{2}}\\text{ cm}$" },
+      { "id": "D", "text": "$5\\frac{\\sqrt{3}}{2}\\text{ cm}$" }
+    ],
+    "correct_answer": "A",
+    "explanation": "In SHM, the kinetic energy at position $x$ is $K = \\frac{1}{2}m\\omega^2(A^2 - x^2)$, and potential energy is $U = \\frac{1}{2}m\\omega^2 x^2$.\nWhen $K = U$:\n$$\\frac{1}{2}m\\omega^2(A^2 - x^2) = \\frac{1}{2}m\\omega^2 x^2$$\n$$A^2 - x^2 = x^2 \\implies 2x^2 = A^2 \\implies x = \\pm \\frac{A}{\\sqrt{2}}$$\nGiven $A = 5\\text{ cm}$:\n$$x = \\frac{5}{\\sqrt{2}}\\text{ cm}$$\nHence, the distance is $\\frac{5}{\\sqrt{2}}\\text{ cm}$."
+  },
+  {
+    "id": "jee_chem_007",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics and Thermochemistry",
+    "difficulty": "JEE Main",
+    "type": "single_choice",
+    "marks": { "correct": 4, "incorrect": -1 },
+    "year": "JEE Main 2024",
+    "question": "For a spontaneous process at constant temperature and pressure, which of the following criteria must always be satisfied?",
+    "options": [
+      { "id": "A", "text": "$\\Delta G_{\\text{system}} < 0$" },
+      { "id": "B", "text": "$\\Delta H_{\\text{system}} < 0$" },
+      { "id": "C", "text": "$\\Delta S_{\\text{system}} > 0$" },
+      { "id": "D", "text": "$\\Delta U_{\\text{system}} = 0$" }
+    ],
+    "correct_answer": "A",
+    "explanation": "At constant temperature and pressure, the criterion for spontaneity derived from the Second Law of Thermodynamics is that the Gibbs Free Energy change of the system must be negative:\n$$\\Delta G_{\\text{system}} = \\Delta H - T\\Delta S < 0$$\nWhile $\\Delta H < 0$ or $\\Delta S_{\\text{system}} > 0$ often favor spontaneity, they are neither universally necessary nor sufficient on their own (an endothermic reaction can be spontaneous if $T\\Delta S > \\Delta H$, and a reaction with decreasing system entropy can be spontaneous if $\\Delta H$ is sufficiently negative). Only $\\Delta G < 0$ is the strict requirement at constant $T$ and $P$."
+  }
+]

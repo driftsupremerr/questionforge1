@@ -1,0 +1,1861 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuestionForge - Next-Gen JEE Exam CBT & AI Question Platform</title>
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              200: '#bfdbfe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a'
+            },
+            forge: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c'
+            },
+            jee: {
+              answered: '#16a34a',
+              notAnswered: '#dc2626',
+              review: '#9333ea',
+              notVisited: '#64748b',
+              navy: '#0f172a'
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- KaTeX for Real-time Mathematical Equation Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- PDF.js for Client-Side PDF Processing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    if (window.pdfjsLib) {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+  </script>
+
+  <!-- Canvas Confetti for Scorecards -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="h-full flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased selection:bg-orange-500 selection:text-white">
+
+  <!-- =========================================================
+       TOP GLOBAL NAVIGATION HEADER
+       ========================================================= -->
+  <header class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40 shadow-xs transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- Logo & Branding -->
+        <div class="flex items-center gap-3 cursor-pointer" onclick="App.switchMode('landing')">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 via-orange-600 to-rose-600 flex items-center justify-center text-white shadow-md shadow-orange-500/20">
+            <i data-lucide="flame" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-amber-500 via-orange-600 to-rose-600 bg-clip-text text-transparent">QuestionForge</span>
+              <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-orange-100 text-orange-700 dark:bg-orange-950/50 dark:text-orange-300 border border-orange-200 dark:border-orange-800">JEE 2.0</span>
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium hidden sm:block">Intelligent CBT & AI Preparation</p>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="hidden lg:flex items-center space-x-1">
+          <button id="nav-btn-landing" onclick="App.switchMode('landing')" class="nav-tab active flex items-center gap-1.5 px-3 py-2 text-sm font-semibold rounded-lg transition-all text-orange-600 bg-orange-50 dark:bg-orange-950/40 dark:text-orange-400">
+            <i data-lucide="home" class="w-4 h-4"></i>
+            <span>Overview</span>
+          </button>
+          <button id="nav-btn-simulator" onclick="App.switchMode('simulator')" class="nav-tab flex items-center gap-1.5 px-3 py-2 text-sm font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+            <i data-lucide="target" class="w-4 h-4"></i>
+            <span>CBT Simulator</span>
+          </button>
+          <button id="nav-btn-practice" onclick="App.switchMode('practice')" class="nav-tab flex items-center gap-1.5 px-3 py-2 text-sm font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+            <i data-lucide="book-open" class="w-4 h-4"></i>
+            <span>Practice</span>
+          </button>
+          <button id="nav-btn-scanner" onclick="App.switchMode('scanner')" class="nav-tab flex items-center gap-1.5 px-3 py-2 text-sm font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+            <i data-lucide="scan-line" class="w-4 h-4"></i>
+            <span>AI Scanner</span>
+            <span class="inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-bold bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300">OCR</span>
+          </button>
+          <button id="nav-btn-image-upload" onclick="App.switchMode('image-upload')" class="nav-tab flex items-center gap-1.5 px-3 py-2 text-sm font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+            <i data-lucide="image-plus" class="w-4 h-4 text-emerald-500"></i>
+            <span>Add Image Q</span>
+            <span class="inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">Direct</span>
+          </button>
+          <button id="nav-btn-bank" onclick="App.switchMode('bank')" class="nav-tab flex items-center gap-1.5 px-3 py-2 text-sm font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+            <i data-lucide="database" class="w-4 h-4"></i>
+            <span>Question Bank</span>
+          </button>
+          <button id="nav-btn-analytics" onclick="App.switchMode('analytics')" class="nav-tab flex items-center gap-1.5 px-3 py-2 text-sm font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+            <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
+            <span>Analytics</span>
+          </button>
+        </nav>
+
+        <!-- Right Quick Controls -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          
+          <!-- Running Exam Quick Pill (Hidden by default) -->
+          <div id="active-exam-indicator" class="hidden items-center gap-2 px-3 py-1 bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 rounded-lg text-xs font-semibold cursor-pointer" onclick="App.switchMode('simulator')">
+            <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+            <span>Test Active</span>
+            <span id="nav-exam-timer" class="font-mono font-bold">--:--</span>
+          </div>
+
+          <!-- Total Questions Counter Badge -->
+          <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-medium text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 cursor-pointer" onclick="App.switchMode('bank')" title="Total questions in database">
+            <i data-lucide="file-question" class="w-3.5 h-3.5 text-orange-500"></i>
+            <span id="header-question-count">0</span>
+            <span class="text-slate-400">Qs</span>
+          </div>
+
+          <!-- Cloud & GCS Settings Button -->
+          <button onclick="App.openCloudSettingsModal()" class="p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 relative transition-colors" title="Google Cloud Storage & Gemini AI Settings">
+            <i data-lucide="cloud" class="w-4 h-4 text-blue-500"></i>
+            <span id="cloud-status-dot" class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-slate-400"></span>
+          </button>
+
+          <!-- Gemini API Key Settings Button -->
+          <button onclick="App.openApiKeyModal()" class="p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 relative transition-colors" title="Configure Gemini AI API Key">
+            <i data-lucide="key" class="w-4 h-4 text-purple-500"></i>
+            <span id="api-key-status-dot" class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-slate-400"></span>
+          </button>
+
+          <!-- Dark/Light Theme Toggle -->
+          <button onclick="App.toggleTheme()" class="p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" title="Toggle Theme">
+            <i id="theme-icon" data-lucide="moon" class="w-4 h-4"></i>
+          </button>
+
+          <!-- Mobile Hamburger Menu Button -->
+          <button onclick="App.toggleMobileMenu()" class="lg:hidden p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+            <i data-lucide="menu" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Dropdown Navigation -->
+      <div id="mobile-menu" class="hidden lg:hidden pb-3 pt-2 border-t border-slate-200 dark:border-slate-800 space-y-1">
+        <button onclick="App.switchMode('landing'); App.toggleMobileMenu()" class="w-full text-left flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+          <i data-lucide="home" class="w-4 h-4 text-orange-500"></i> Platform Overview
+        </button>
+        <button onclick="App.switchMode('simulator'); App.toggleMobileMenu()" class="w-full text-left flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+          <i data-lucide="target" class="w-4 h-4 text-blue-500"></i> Exam Simulator (CBT)
+        </button>
+        <button onclick="App.switchMode('practice'); App.toggleMobileMenu()" class="w-full text-left flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+          <i data-lucide="book-open" class="w-4 h-4 text-emerald-500"></i> Practice & Study
+        </button>
+        <button onclick="App.switchMode('scanner'); App.toggleMobileMenu()" class="w-full text-left flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+          <i data-lucide="scan-line" class="w-4 h-4 text-purple-500"></i> AI Document Scanner
+        </button>
+        <button onclick="App.switchMode('image-upload'); App.toggleMobileMenu()" class="w-full text-left flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+          <i data-lucide="image-plus" class="w-4 h-4 text-teal-500"></i> Add Image Question (Direct)
+        </button>
+        <button onclick="App.switchMode('bank'); App.toggleMobileMenu()" class="w-full text-left flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+          <i data-lucide="database" class="w-4 h-4 text-amber-500"></i> Question Bank & Manager
+        </button>
+        <button onclick="App.switchMode('analytics'); App.toggleMobileMenu()" class="w-full text-left flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+          <i data-lucide="bar-chart-2" class="w-4 h-4 text-indigo-500"></i> Analytics & History
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================
+       MAIN CONTENT CONTAINER
+       ========================================================= -->
+  <main class="flex-1 flex flex-col overflow-y-auto">
+
+    <!-- ---------------------------------------------------------
+         MODE 0: QUESTIONFORGE LANDING PAGE (HERO & FEATURE SHOWCASE)
+         --------------------------------------------------------- -->
+    <section id="view-landing" class="mode-view flex-1 flex flex-col">
+      
+      <!-- Hero Section with Radial Glow -->
+      <div class="relative hero-glow border-b border-slate-200/80 dark:border-slate-800/80 px-4 pt-12 pb-16 sm:pt-20 sm:pb-24 overflow-hidden">
+        <div class="max-w-5xl mx-auto text-center relative z-10 space-y-6">
+          
+          <!-- Pill Badge -->
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-100 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-800 text-orange-700 dark:text-orange-300 text-xs font-bold shadow-xs">
+            <i data-lucide="flame" class="w-4 h-4 text-orange-500"></i>
+            <span>Next-Gen JEE Main & Advanced CBT Preparation Engine</span>
+          </div>
+
+          <!-- Bold Headline -->
+          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.12]">
+            Forge Your JEE Success with <br class="hidden sm:inline">
+            <span class="bg-gradient-to-r from-amber-500 via-orange-600 to-rose-600 bg-clip-text text-transparent">AI Precision & Real CBT Power</span>
+          </h1>
+
+          <!-- Description Subtitle -->
+          <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed font-normal">
+            Turn PDF exam papers and diagram screenshots into interactive tests. Practice step-by-step KaTeX derivations, run authentic 3-hour timed NTA CBT exams with color-coded palettes, and store your questions in the cloud.
+          </p>
+
+          <!-- Primary CTA Buttons -->
+          <div class="pt-4 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+            <button onclick="App.switchMode('simulator')" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold text-sm shadow-md shadow-blue-500/25 flex items-center gap-2 transition-all">
+              <i data-lucide="target" class="w-4 h-4"></i>
+              <span>Launch CBT Simulator</span>
+            </button>
+            <button onclick="App.switchMode('scanner')" class="px-5 py-3.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-sm shadow-md shadow-purple-500/25 flex items-center gap-2 transition-all">
+              <i data-lucide="scan-line" class="w-4 h-4"></i>
+              <span>AI Document Scanner</span>
+            </button>
+            <button onclick="App.switchMode('image-upload')" class="px-5 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm shadow-md shadow-emerald-500/25 flex items-center gap-2 transition-all">
+              <i data-lucide="image-plus" class="w-4 h-4"></i>
+              <span>Direct Image Q</span>
+            </button>
+            <button onclick="App.switchMode('practice')" class="px-5 py-3.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-sm transition-all flex items-center gap-2">
+              <i data-lucide="book-open" class="w-4 h-4"></i>
+              <span>Topic Practice</span>
+            </button>
+          </div>
+
+          <!-- Live Metrics Strip -->
+          <div class="pt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto">
+            <div class="p-4 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-xs">
+              <div class="text-2xl font-extrabold text-blue-600 dark:text-blue-400" id="landing-stat-total">25+</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Authentic JEE Questions</div>
+            </div>
+            <div class="p-4 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-xs">
+              <div class="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400">100%</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">LaTeX Math Rendering</div>
+            </div>
+            <div class="p-4 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-xs">
+              <div class="text-2xl font-extrabold text-purple-600 dark:text-purple-400">5-Color</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Authentic NTA CBT Palette</div>
+            </div>
+            <div class="p-4 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-xs">
+              <div class="text-2xl font-extrabold text-orange-600 dark:text-orange-400">Cloud & Edge</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Cloudflare & GCS Storage</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Core Feature Showcase Grid -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
+        
+        <div class="text-center max-w-2xl mx-auto space-y-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-orange-600 dark:text-orange-400">Built For High Rank Aspirants</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Everything You Need for JEE Main & Advanced</h2>
+          <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">A unified, zero-distraction examination and practice platform designed around authentic NTA CBT standards.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+          <!-- Feature 1: AI Multimodal Scanner -->
+          <div class="feature-card bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between space-y-4">
+            <div class="space-y-3">
+              <div class="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 flex items-center justify-center shadow-xs">
+                <i data-lucide="scan-line" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">AI Document & PDF Scanner</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                Extract questions directly from any JEE test paper PDF (including 2-column formats) and images. Preserves mathematical formulas like $\int$, $\frac{d}{dx}$, matrices, and chemical notation with side-by-side verification.
+              </p>
+            </div>
+            <button onclick="App.switchMode('scanner')" class="text-xs font-bold text-purple-600 dark:text-purple-400 hover:underline flex items-center gap-1 self-start">
+              <span>Scan Paper Now</span> <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Feature 2: Direct Visual Question Uploader -->
+          <div class="feature-card bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between space-y-4">
+            <div class="space-y-3">
+              <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-xs">
+                <i data-lucide="image-plus" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">Direct Image Question (No OCR)</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                Paste question screenshots with <kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-[10px]">Ctrl+V</kbd>. Ideal for complex circuit diagrams, geometry problems, and graphs. Select answer key A/B/C/D in 1 click and inspect in full-screen zoom lightbox.
+              </p>
+            </div>
+            <button onclick="App.switchMode('image-upload')" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 self-start">
+              <span>Upload Image Q</span> <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Feature 3: Authentic NTA CBT Exam Simulator -->
+          <div class="feature-card bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between space-y-4">
+            <div class="space-y-3">
+              <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center shadow-xs">
+                <i data-lucide="target" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">Real NTA CBT Simulator</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                Full 3-hour or custom countdown timers, section switching (Physics, Chemistry, Math), authentic 5-state palette (Answered [Green], Not Answered [Red], Marked for Review [Purple]), Save & Next, and automated scorecards.
+              </p>
+            </div>
+            <button onclick="App.switchMode('simulator')" class="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 self-start">
+              <span>Start CBT Exam</span> <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Feature 4: Topic Practice & KaTeX Derivations -->
+          <div class="feature-card bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between space-y-4">
+            <div class="space-y-3">
+              <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center shadow-xs">
+                <i data-lucide="book-open" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">Topic Practice & Formula Hints</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                Practice topic-by-topic drills with instant answer evaluation, formula hints, and expandable step-by-step KaTeX mathematical derivations for conceptual mastery.
+              </p>
+            </div>
+            <button onclick="App.switchMode('practice')" class="text-xs font-bold text-amber-600 dark:text-amber-400 hover:underline flex items-center gap-1 self-start">
+              <span>Practice Questions</span> <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Feature 5: Question Bank & Management -->
+          <div class="feature-card bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between space-y-4">
+            <div class="space-y-3">
+              <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shadow-xs">
+                <i data-lucide="database" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">Comprehensive Question Bank</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                Search, filter by chapter, edit questions with split-screen live KaTeX preview, export/import JSON backups, and seed 25+ authentic JEE questions with one click.
+              </p>
+            </div>
+            <button onclick="App.switchMode('bank')" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1 self-start">
+              <span>Manage Bank</span> <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Feature 6: Cloudflare Edge & Google Cloud Storage -->
+          <div class="feature-card bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between space-y-4">
+            <div class="space-y-3">
+              <div class="w-12 h-12 rounded-xl bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 flex items-center justify-center shadow-xs">
+                <i data-lucide="cloud" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">Cloudflare & GCS Cloud Sync</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                Ready for one-click deployment on Cloudflare Pages and Workers. Native zero-dependency Google Cloud Storage bucket synchronization keeps your questions safely stored.
+              </p>
+            </div>
+            <button onclick="App.openCloudSettingsModal()" class="text-xs font-bold text-rose-600 dark:text-rose-400 hover:underline flex items-center gap-1 self-start">
+              <span>Configure Cloud</span> <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Quick Subject Explorer Cards -->
+      <div class="bg-slate-100/60 dark:bg-slate-900/40 border-y border-slate-200/80 dark:border-slate-800/80 py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto space-y-8">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-orange-600 dark:text-orange-400">Subject Coverage</span>
+              <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white">Quick Subject Practice Launchers</h2>
+            </div>
+            <button onclick="App.switchMode('practice')" class="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1">
+              <span>View All Subjects</span> <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- Physics Launcher -->
+            <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-blue-500"></span>
+                  <h3 class="font-bold text-base text-slate-900 dark:text-white">Physics</h3>
+                </div>
+                <span id="landing-stat-phy" class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">11 Qs</span>
+              </div>
+              <p class="text-xs text-slate-500 dark:text-slate-400">
+                Rotational Motion, Electrostatics, Capacitance, Wave Optics, and Modern Physics.
+              </p>
+              <button onclick="App.launchSubjectPractice('Physics')" class="w-full py-2.5 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 hover:bg-blue-100 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors">
+                <i data-lucide="zap" class="w-3.5 h-3.5"></i> Practice Physics
+              </button>
+            </div>
+
+            <!-- Chemistry Launcher -->
+            <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                  <h3 class="font-bold text-base text-slate-900 dark:text-white">Chemistry</h3>
+                </div>
+                <span id="landing-stat-chem" class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300">7 Qs</span>
+              </div>
+              <p class="text-xs text-slate-500 dark:text-slate-400">
+                Thermodynamics, Chemical Kinetics, Coordination Compounds, and Organic Reaction Mechanisms.
+              </p>
+              <button onclick="App.launchSubjectPractice('Chemistry')" class="w-full py-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-300 hover:bg-emerald-100 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors">
+                <i data-lucide="flask-conical" class="w-3.5 h-3.5"></i> Practice Chemistry
+              </button>
+            </div>
+
+            <!-- Mathematics Launcher -->
+            <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-purple-500"></span>
+                  <h3 class="font-bold text-base text-slate-900 dark:text-white">Mathematics</h3>
+                </div>
+                <span id="landing-stat-math" class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">6 Qs</span>
+              </div>
+              <p class="text-xs text-slate-500 dark:text-slate-400">
+                Definite Integrals, Coordinate Geometry, Matrices, Determinants, and Vector Algebra.
+              </p>
+              <button onclick="App.launchSubjectPractice('Mathematics')" class="w-full py-2.5 rounded-xl bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-300 hover:bg-purple-100 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors">
+                <i data-lucide="sigma" class="w-3.5 h-3.5"></i> Practice Mathematics
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- 3-Step Workflow -->
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-10">
+        <div class="text-center max-w-xl mx-auto space-y-1">
+          <span class="text-xs font-bold uppercase tracking-wider text-orange-600 dark:text-orange-400">Simple 3-Step Workflow</span>
+          <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white">How QuestionForge Works</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="text-center space-y-3">
+            <div class="w-12 h-12 rounded-full bg-orange-100 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 font-extrabold text-lg flex items-center justify-center mx-auto shadow-xs border border-orange-200 dark:border-orange-800">
+              1
+            </div>
+            <h3 class="text-base font-bold text-slate-900 dark:text-white">Input Your Questions</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              Drop any PDF test paper, paste a screenshot directly with Ctrl+V, or load from the built-in authentic JEE question bank.
+            </p>
+          </div>
+
+          <div class="text-center space-y-3">
+            <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 font-extrabold text-lg flex items-center justify-center mx-auto shadow-xs border border-blue-200 dark:border-blue-800">
+              2
+            </div>
+            <h3 class="text-base font-bold text-slate-900 dark:text-white">Simulate CBT or Practice</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              Take full timed exams with authentic NTA palette rules (+4/-1 marking) or practice topic drills with instant answer evaluation.
+            </p>
+          </div>
+
+          <div class="text-center space-y-3">
+            <div class="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 font-extrabold text-lg flex items-center justify-center mx-auto shadow-xs border border-emerald-200 dark:border-emerald-800">
+              3
+            </div>
+            <h3 class="text-base font-bold text-slate-900 dark:text-white">Master & Track Analytics</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              Review detailed question-by-question KaTeX derivations, formula tips, accuracy metrics, and time distribution by subject.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Landing Footer -->
+      <footer class="mt-auto border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-8 px-4 text-center text-xs text-slate-500 dark:text-slate-400">
+        <div class="flex items-center justify-center gap-2 mb-2 font-bold text-slate-700 dark:text-slate-300">
+          <i data-lucide="flame" class="w-4 h-4 text-orange-500"></i>
+          <span>QuestionForge JEE Prep Platform</span>
+        </div>
+        <p>Built for Indian JEE Main & Advanced aspirants with real NTA CBT fidelity, KaTeX math typesetting, and multimodal OCR.</p>
+      </footer>
+
+    </section>
+
+    <!-- ---------------------------------------------------------
+         MODE 1: EXAM SIMULATOR
+         --------------------------------------------------------- -->
+    <section id="view-simulator" class="mode-view hidden flex-1 flex flex-col">
+      
+      <!-- 1A: Exam Launch & Configuration Screen -->
+      <div id="exam-setup-container" class="max-w-4xl mx-auto w-full px-4 py-8">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+          
+          <!-- Banner -->
+          <div class="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 px-6 py-6 text-white">
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="inline-block px-2.5 py-1 rounded-md bg-white/10 text-xs font-semibold uppercase tracking-wider backdrop-blur-sm mb-2">Authentic NTA CBT Mock Test</span>
+                <h1 class="text-2xl font-extrabold tracking-tight">JEE Computer-Based Test Simulator</h1>
+                <p class="text-blue-100 text-sm mt-1">Practice under real test conditions with timed countdown, section switching, and official question palette marking.</p>
+              </div>
+              <div class="hidden sm:block text-right">
+                <i data-lucide="award" class="w-12 h-12 text-blue-200/80"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 sm:p-8 space-y-6">
+            
+            <!-- Exam Options Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
+              <!-- Left: Exam Mode & Duration -->
+              <div class="space-y-4">
+                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Exam Pattern</label>
+                <div class="grid grid-cols-2 gap-3">
+                  <button type="button" onclick="App.setExamPattern('jee-main')" id="opt-pattern-main" class="exam-pattern-card active p-4 rounded-xl border-2 border-blue-600 bg-blue-50/50 dark:bg-blue-900/20 text-left transition-all">
+                    <div class="flex items-center justify-between mb-1">
+                      <span class="font-bold text-slate-900 dark:text-white">JEE Main</span>
+                      <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-600"></i>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Single Choice & Numerical (+4, -1 / 0)</p>
+                  </button>
+
+                  <button type="button" onclick="App.setExamPattern('jee-advanced')" id="opt-pattern-adv" class="exam-pattern-card p-4 rounded-xl border-2 border-slate-200 dark:border-slate-800 text-left hover:border-slate-300 dark:hover:border-slate-700 transition-all">
+                    <div class="flex items-center justify-between mb-1">
+                      <span class="font-bold text-slate-900 dark:text-white">JEE Advanced</span>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Multi-correct, Negative marking (+4, -2)</p>
+                  </button>
+                </div>
+
+                <!-- Duration Picker -->
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Duration</label>
+                  <div class="grid grid-cols-4 gap-2">
+                    <button type="button" onclick="App.setExamDuration(180)" id="opt-dur-180" class="dur-btn active py-2 rounded-lg border text-xs font-semibold text-center border-blue-600 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">180 Mins (3h)</button>
+                    <button type="button" onclick="App.setExamDuration(60)" id="opt-dur-60" class="dur-btn py-2 rounded-lg border text-xs font-semibold text-center border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-slate-300">60 Mins</button>
+                    <button type="button" onclick="App.setExamDuration(30)" id="opt-dur-30" class="dur-btn py-2 rounded-lg border text-xs font-semibold text-center border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-slate-300">30 Mins</button>
+                    <button type="button" onclick="App.setExamDuration(15)" id="opt-dur-15" class="dur-btn py-2 rounded-lg border text-xs font-semibold text-center border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-slate-300">15 Mins</button>
+                  </div>
+                </div>
+
+                <!-- Subject Selection -->
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Subject Coverage</label>
+                  <select id="exam-subject-filter" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100">
+                    <option value="all">Full Test: Physics + Chemistry + Mathematics</option>
+                    <option value="Physics">Physics Only</option>
+                    <option value="Chemistry">Chemistry Only</option>
+                    <option value="Mathematics">Mathematics Only</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Right: Instructions & Palette Legend Preview -->
+              <div class="bg-slate-50 dark:bg-slate-800/50 p-5 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
+                <div>
+                  <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100 mb-3 flex items-center gap-2">
+                    <i data-lucide="info" class="w-4 h-4 text-blue-500"></i>
+                    <span>Question Palette Status Key</span>
+                  </h3>
+                  <div class="space-y-2 text-xs">
+                    <div class="flex items-center gap-2.5">
+                      <span class="cbt-btn cbt-answered w-7 h-6 text-xs">1</span>
+                      <span class="text-slate-700 dark:text-slate-300 font-medium">Answered (Evaluated)</span>
+                    </div>
+                    <div class="flex items-center gap-2.5">
+                      <span class="cbt-btn cbt-not-answered w-7 h-6 text-xs">2</span>
+                      <span class="text-slate-700 dark:text-slate-300 font-medium">Not Answered</span>
+                    </div>
+                    <div class="flex items-center gap-2.5">
+                      <span class="cbt-btn cbt-review w-7 h-6 text-xs">3</span>
+                      <span class="text-slate-700 dark:text-slate-300 font-medium">Marked for Review (Not evaluated)</span>
+                    </div>
+                    <div class="flex items-center gap-2.5">
+                      <span class="cbt-btn cbt-ans-review w-7 h-6 text-xs">4</span>
+                      <span class="text-slate-700 dark:text-slate-300 font-medium">Answered & Marked for Review (Evaluated)</span>
+                    </div>
+                    <div class="flex items-center gap-2.5">
+                      <span class="cbt-btn cbt-not-visited w-7 h-6 text-xs">5</span>
+                      <span class="text-slate-700 dark:text-slate-300 font-medium">Not Visited</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-700 text-[11px] text-slate-500 dark:text-slate-400">
+                  <p>⚠️ Do not refresh or close browser during test. Timer runs continuously.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Start Button -->
+            <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+              <span id="exam-available-q-count" class="text-xs text-slate-500 dark:text-slate-400 font-medium">Loading questions...</span>
+              <button id="btn-start-exam" onclick="App.launchExam()" class="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm shadow-md shadow-blue-500/25 flex items-center gap-2 transition-all">
+                <span>Start Examination Now</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1B: Active CBT Test Environment (Full Screen CBT Experience) -->
+      <div id="exam-active-container" class="hidden flex-1 flex flex-col bg-slate-100 dark:bg-slate-900">
+        
+        <!-- CBT Top Banner -->
+        <div class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-2.5 flex items-center justify-between shadow-xs">
+          <div class="flex items-center gap-3">
+            <span class="font-extrabold text-blue-700 dark:text-blue-400 text-sm tracking-wide">QUESTIONFORGE CBT</span>
+            <span class="text-slate-300 dark:text-slate-700 hidden sm:inline">|</span>
+            <span id="cbt-exam-name" class="text-xs font-semibold text-slate-700 dark:text-slate-300 hidden sm:inline">JEE (Main) Mock Test Paper</span>
+          </div>
+
+          <!-- Subject Tabs -->
+          <div id="cbt-subject-tabs" class="flex items-center space-x-1 sm:space-x-2">
+            <!-- Dynamic Subject buttons (Physics, Chemistry, Mathematics) -->
+          </div>
+
+          <!-- Right controls: Palette Toggle (Mobile) & Countdown Timer Box -->
+          <div class="flex items-center gap-2">
+            <button onclick="App.toggleMobilePalette()" id="btn-toggle-palette" class="lg:hidden px-2.5 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 font-bold text-xs flex items-center gap-1 border border-blue-200 dark:border-blue-800">
+              <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+              <span id="txt-mobile-palette">Palette</span>
+            </button>
+
+            <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 dark:bg-slate-800 text-white shadow-xs">
+              <i data-lucide="clock" class="w-4 h-4 text-amber-400"></i>
+              <span class="text-xs text-slate-300 font-medium hidden sm:inline">Time Left:</span>
+              <span id="cbt-timer-display" class="font-mono text-base font-bold text-amber-300">03:00:00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Workspace: Split Pane -->
+        <div class="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
+          
+          <!-- Left: Question & Response View (75% Width) -->
+          <div class="flex-1 flex flex-col bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 overflow-y-auto">
+            
+            <!-- Question Top Info Bar -->
+            <div class="px-6 py-3 border-b border-slate-100 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/60 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span id="cbt-q-number" class="text-sm font-bold text-slate-800 dark:text-slate-200">Question No. 1</span>
+                <span id="cbt-q-type-badge" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">Single Choice</span>
+              </div>
+              <div class="flex items-center gap-2 text-xs font-semibold">
+                <span class="text-emerald-600 dark:text-emerald-400" id="cbt-q-marks-pos">+4.00</span>
+                <span class="text-slate-400">/</span>
+                <span class="text-rose-600 dark:text-rose-400" id="cbt-q-marks-neg">-1.00</span>
+              </div>
+            </div>
+
+            <!-- Question Body & Formula Content -->
+            <div class="flex-1 p-6 sm:p-8 space-y-6 overflow-y-auto">
+              
+              <!-- Question LaTeX Stem -->
+              <div id="cbt-question-text" class="text-base sm:text-lg leading-relaxed text-slate-800 dark:text-slate-100 font-normal select-text">
+                Loading question...
+              </div>
+
+              <!-- Question Diagram Image (if any) -->
+              <div id="cbt-question-image-box" class="hidden pt-2">
+                <div class="relative inline-block max-w-full">
+                  <img id="cbt-question-img" src="" class="max-h-80 rounded-xl border border-slate-200 dark:border-slate-700 object-contain shadow-xs cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all" onclick="App.openImageLightbox(this.src)" alt="Question Diagram">
+                  <div class="mt-1 text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1 cursor-pointer" onclick="App.openImageLightbox(document.getElementById('cbt-question-img').src)">
+                    <i data-lucide="zoom-in" class="w-3.5 h-3.5 text-blue-500"></i> Click diagram to expand full screen
+                  </div>
+                </div>
+              </div>
+
+              <!-- Options / Input Section -->
+              <div id="cbt-options-container" class="space-y-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+                <!-- Dynamically generated options (Single Choice Radio / Multi Choice Checkboxes / Numerical Input) -->
+              </div>
+            </div>
+
+            <!-- Authentic Bottom Action Toolbar -->
+            <div class="px-6 py-3 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <button onclick="App.quizEngine.saveAndNext()" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-colors">
+                  Save & Next
+                </button>
+                <button onclick="App.quizEngine.saveAndMarkForReview()" class="px-3.5 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-xs transition-colors">
+                  Save & Mark for Review
+                </button>
+                <button onclick="App.quizEngine.clearResponse()" class="px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs transition-colors">
+                  Clear Response
+                </button>
+                <button onclick="App.quizEngine.markForReviewAndNext()" class="px-3 py-2 rounded-lg border border-purple-400 dark:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-950/40 text-purple-700 dark:text-purple-300 font-semibold text-xs transition-colors">
+                  Mark for Review & Next
+                </button>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <button onclick="App.quizEngine.prevQuestion()" class="px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs transition-colors flex items-center gap-1">
+                  <i data-lucide="chevron-left" class="w-4 h-4"></i> Previous
+                </button>
+                <button onclick="App.quizEngine.nextQuestion()" class="px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs transition-colors flex items-center gap-1">
+                  Next <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Question Palette & Student Summary (25% Width) -->
+          <div id="cbt-palette-sidebar" class="w-full lg:w-80 xl:w-96 bg-slate-50 dark:bg-slate-950 flex flex-col border-t lg:border-t-0 border-slate-200 dark:border-slate-800 overflow-y-auto mobile-collapsed lg:flex">
+            
+            <!-- Candidate Profile Mock -->
+            <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center gap-3 bg-white dark:bg-slate-900">
+              <div class="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-950/50 text-orange-600 dark:text-orange-400 flex items-center justify-center font-bold text-sm border border-orange-200 dark:border-orange-800">
+                <i data-lucide="user" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-slate-900 dark:text-slate-100">Candidate: Aspirant</p>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400">Roll No: 250100428</p>
+              </div>
+            </div>
+
+            <!-- Palette Status Counters Summary -->
+            <div class="p-3 border-b border-slate-200 dark:border-slate-800 bg-slate-100/50 dark:bg-slate-900/40">
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <div class="flex items-center gap-2">
+                  <span class="w-5 h-5 rounded cbt-answered flex items-center justify-center text-[10px] font-bold" id="stat-count-answered">0</span>
+                  <span class="text-slate-600 dark:text-slate-400">Answered</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="w-5 h-5 rounded cbt-not-answered flex items-center justify-center text-[10px] font-bold" id="stat-count-not-answered">0</span>
+                  <span class="text-slate-600 dark:text-slate-400">Not Answered</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="w-5 h-5 rounded cbt-review flex items-center justify-center text-[10px] font-bold" id="stat-count-review">0</span>
+                  <span class="text-slate-600 dark:text-slate-400">Marked for Review</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="w-5 h-5 rounded cbt-ans-review flex items-center justify-center text-[10px] font-bold" id="stat-count-ans-review">0</span>
+                  <span class="text-slate-600 dark:text-slate-400">Ans & Marked</span>
+                </div>
+                <div class="flex items-center gap-2 col-span-2">
+                  <span class="w-5 h-5 rounded cbt-not-visited flex items-center justify-center text-[10px] font-bold" id="stat-count-not-visited">0</span>
+                  <span class="text-slate-600 dark:text-slate-400">Not Visited</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Subject Palette Header -->
+            <div class="px-4 py-2 bg-blue-600 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-between">
+              <span id="palette-subject-title">Physics</span>
+              <span class="text-[11px] opacity-80">Questions</span>
+            </div>
+
+            <!-- Question Numbers Grid Matrix -->
+            <div class="flex-1 p-4 overflow-y-auto">
+              <div id="cbt-palette-grid" class="grid grid-cols-5 gap-2">
+                <!-- Dynamically rendered question number buttons 1..N -->
+              </div>
+            </div>
+
+            <!-- Submit Test Action Button -->
+            <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+              <button onclick="App.confirmSubmitExam()" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2">
+                <i data-lucide="check-square" class="w-4 h-4"></i>
+                <span>Submit Final Test</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1C: Comprehensive Score Card & Question-wise Solution Analysis -->
+      <div id="exam-result-container" class="hidden max-w-5xl mx-auto w-full px-4 py-8 space-y-6">
+        
+        <!-- Score Overview Card -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+          <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-blue-700 px-6 py-8 text-white text-center">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 backdrop-blur-md mb-3 shadow-inner">
+              <i data-lucide="trophy" class="w-8 h-8 text-amber-300"></i>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Examination Summary & Score Card</h2>
+            <p class="text-emerald-100 text-sm mt-1" id="res-timestamp">Completed just now</p>
+
+            <!-- Score Big Numbers -->
+            <div class="mt-6 flex flex-wrap items-center justify-center gap-6">
+              <div class="px-6 py-3 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20">
+                <span class="block text-xs uppercase tracking-wider text-emerald-100 font-semibold">Total Score</span>
+                <span id="res-total-score" class="text-3xl font-extrabold text-white">0 / 0</span>
+              </div>
+              <div class="px-6 py-3 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20">
+                <span class="block text-xs uppercase tracking-wider text-emerald-100 font-semibold">Accuracy</span>
+                <span id="res-accuracy" class="text-3xl font-extrabold text-amber-300">0%</span>
+              </div>
+              <div class="px-6 py-3 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20">
+                <span class="block text-xs uppercase tracking-wider text-emerald-100 font-semibold">Time Taken</span>
+                <span id="res-time-taken" class="text-3xl font-extrabold text-white">00:00:00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Question Count Breakdown Pills -->
+          <div class="p-6 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center border-b border-slate-200 dark:border-slate-800">
+            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60">
+              <span class="block text-xs text-slate-500 font-medium">Total Questions</span>
+              <span id="res-cnt-total" class="text-xl font-bold text-slate-800 dark:text-slate-100">0</span>
+            </div>
+            <div class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30">
+              <span class="block text-xs text-emerald-600 dark:text-emerald-400 font-medium">Correct</span>
+              <span id="res-cnt-correct" class="text-xl font-bold text-emerald-700 dark:text-emerald-300">0</span>
+            </div>
+            <div class="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/30">
+              <span class="block text-xs text-rose-600 dark:text-rose-400 font-medium">Incorrect</span>
+              <span id="res-cnt-incorrect" class="text-xl font-bold text-rose-700 dark:text-rose-300">0</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60">
+              <span class="block text-xs text-slate-500 font-medium">Unattempted</span>
+              <span id="res-cnt-unattempted" class="text-xl font-bold text-slate-700 dark:text-slate-300">0</span>
+            </div>
+          </div>
+
+          <!-- Subject-wise Score Breakdown Table -->
+          <div class="p-6">
+            <h3 class="text-base font-bold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
+              <i data-lucide="layers" class="w-4 h-4 text-blue-600"></i>
+              <span>Subject Performance Breakdown</span>
+            </h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-sm">
+                <thead>
+                  <tr class="border-b border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">
+                    <th class="py-2.5 px-3">Subject</th>
+                    <th class="py-2.5 px-3">Score</th>
+                    <th class="py-2.5 px-3">Correct</th>
+                    <th class="py-2.5 px-3">Incorrect</th>
+                    <th class="py-2.5 px-3">Unattempted</th>
+                    <th class="py-2.5 px-3">Time Spent</th>
+                  </tr>
+                </thead>
+                <tbody id="res-subject-table-body" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
+                  <!-- Dynamically inserted subject rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Question-wise Solution Explorer Section -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100">Question-wise Analysis & Solutions</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Review your answers alongside detailed KaTeX step-by-step solutions.</p>
+            </div>
+            
+            <!-- Filters -->
+            <div class="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg text-xs font-semibold">
+              <button onclick="App.filterResults('all')" id="res-filter-all" class="px-2.5 py-1 rounded bg-white dark:bg-slate-700 shadow-xs text-blue-600 dark:text-blue-400">All</button>
+              <button onclick="App.filterResults('correct')" id="res-filter-correct" class="px-2.5 py-1 rounded text-slate-600 dark:text-slate-400 hover:text-emerald-600">Correct</button>
+              <button onclick="App.filterResults('incorrect')" id="res-filter-incorrect" class="px-2.5 py-1 rounded text-slate-600 dark:text-slate-400 hover:text-rose-600">Incorrect</button>
+              <button onclick="App.filterResults('unattempted')" id="res-filter-unattempted" class="px-2.5 py-1 rounded text-slate-600 dark:text-slate-400 hover:text-slate-700">Unattempted</button>
+            </div>
+          </div>
+
+          <!-- Dynamic Questions Result Accordion / List -->
+          <div id="res-questions-list" class="space-y-4 pt-2">
+            <!-- Dynamic Result Question Cards with KaTeX Math -->
+          </div>
+
+          <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex justify-end gap-3">
+            <button onclick="App.switchMode('practice')" class="px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">
+              Go to Practice Mode
+            </button>
+            <button onclick="App.resetToExamSetup()" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs">
+              Take Another Exam
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------------
+         MODE 2: PRACTICE & STUDY
+         --------------------------------------------------------- -->
+    <section id="view-practice" class="mode-view hidden flex-1 max-w-5xl mx-auto w-full px-4 py-8 space-y-6">
+      
+      <!-- Top Filters Bar -->
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+          
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Subject</label>
+            <select id="practice-filter-subject" onchange="App.onPracticeFilterChange()" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100">
+              <option value="all">All Subjects</option>
+              <option value="Physics">Physics</option>
+              <option value="Chemistry">Chemistry</option>
+              <option value="Mathematics">Mathematics</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Chapter / Topic</label>
+            <select id="practice-filter-chapter" onchange="App.onPracticeFilterChange()" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100">
+              <option value="all">All Chapters</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Difficulty</label>
+            <select id="practice-filter-difficulty" onchange="App.onPracticeFilterChange()" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100">
+              <option value="all">All Difficulties</option>
+              <option value="JEE Main">JEE Main</option>
+              <option value="JEE Advanced">JEE Advanced</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Question Type</label>
+            <select id="practice-filter-type" onchange="App.onPracticeFilterChange()" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100">
+              <option value="all">All Types</option>
+              <option value="single_choice">Single Choice</option>
+              <option value="multiple_choice">Multiple Choice</option>
+              <option value="numerical">Numerical Value</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Practice Question Card -->
+      <div id="practice-card-container" class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 sm:p-8 space-y-6">
+        
+        <!-- Header Info -->
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span id="prac-subject-badge" class="px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">Physics</span>
+            <span id="prac-chapter-badge" class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">Rotational Motion</span>
+            <span id="prac-diff-badge" class="px-2.5 py-1 rounded-md text-xs font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300">JEE Advanced</span>
+            <span id="prac-year-badge" class="px-2 py-0.5 rounded text-[11px] font-mono text-slate-500">2023</span>
+          </div>
+
+          <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
+            <span id="prac-q-index">Question 1 of 15</span>
+          </div>
+        </div>
+
+        <!-- Question Statement -->
+        <div id="prac-question-text" class="text-base sm:text-lg leading-relaxed text-slate-800 dark:text-slate-100 font-normal">
+          <!-- KaTeX Question Content -->
+        </div>
+
+        <!-- Question Diagram Image (if any) -->
+        <div id="prac-question-image-box" class="hidden pt-2">
+          <div class="relative inline-block max-w-full">
+            <img id="prac-question-img" src="" class="max-h-80 rounded-xl border border-slate-200 dark:border-slate-700 object-contain shadow-xs cursor-pointer hover:ring-2 hover:ring-emerald-500 transition-all" onclick="App.openImageLightbox(this.src)" alt="Question Diagram">
+            <div class="mt-1 text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1 cursor-pointer" onclick="App.openImageLightbox(document.getElementById('prac-question-img').src)">
+              <i data-lucide="zoom-in" class="w-3.5 h-3.5 text-emerald-500"></i> Click diagram to expand
+            </div>
+          </div>
+        </div>
+
+        <!-- Options Container -->
+        <div id="prac-options-container" class="space-y-3 pt-2">
+          <!-- Interactive Options with Instant Check -->
+        </div>
+
+        <!-- Immediate Feedback Banner (hidden by default) -->
+        <div id="prac-feedback-banner" class="hidden p-4 rounded-xl text-sm font-semibold flex items-center justify-between">
+          <div class="flex items-center gap-2" id="prac-feedback-text">
+            <!-- Correct / Incorrect icon & text -->
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <button onclick="App.checkPracticeAnswer()" id="btn-check-prac" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs transition-colors">
+              Check Answer
+            </button>
+            <button onclick="App.togglePracticeSolution()" id="btn-toggle-solution" class="px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs transition-colors flex items-center gap-1.5">
+              <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+              <span>Show Solution</span>
+            </button>
+            <button onclick="App.togglePracticeHint()" id="btn-toggle-hint" class="px-3.5 py-2 rounded-xl border border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-950/30 font-bold text-xs transition-colors flex items-center gap-1.5">
+              <i data-lucide="lightbulb" class="w-3.5 h-3.5"></i>
+              <span>Hint</span>
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="App.prevPracticeQuestion()" class="p-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300" title="Previous Question">
+              <i data-lucide="chevron-left" class="w-4 h-4"></i>
+            </button>
+            <button onclick="App.nextPracticeQuestion()" class="p-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300" title="Next Question">
+              <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </button>
+            <button onclick="App.randomPracticeQuestion()" class="px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold flex items-center gap-1" title="Random Question">
+              <i data-lucide="shuffle" class="w-3.5 h-3.5"></i> Random
+            </button>
+          </div>
+        </div>
+
+        <!-- Expandable Formula Hint Box -->
+        <div id="prac-hint-box" class="hidden p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 text-xs text-amber-900 dark:text-amber-200 space-y-1">
+          <span class="font-bold flex items-center gap-1">
+            <i data-lucide="lightbulb" class="w-3.5 h-3.5 text-amber-500"></i> Concept & Formula Hint:
+          </span>
+          <p id="prac-hint-content" class="leading-relaxed"></p>
+        </div>
+
+        <!-- Expandable Detailed KaTeX Solution Box -->
+        <div id="prac-solution-box" class="hidden p-5 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-200 space-y-2">
+          <div class="flex items-center justify-between font-bold text-xs text-slate-500 uppercase tracking-wider pb-2 border-b border-slate-200 dark:border-slate-700">
+            <span>Detailed Step-by-Step Solution</span>
+            <span class="text-blue-600 dark:text-blue-400" id="prac-correct-key-label">Correct: B</span>
+          </div>
+          <div id="prac-solution-content" class="leading-relaxed pt-2">
+            <!-- KaTeX math equations -->
+          </div>
+          <!-- Solution Diagram Image (if any) -->
+          <div id="prac-solution-image-box" class="hidden pt-3 border-t border-slate-200 dark:border-slate-700">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Solution Diagram:</span>
+            <img id="prac-solution-img" src="" class="max-h-72 rounded-xl border border-slate-200 dark:border-slate-700 object-contain shadow-xs cursor-pointer hover:ring-2 hover:ring-blue-500" onclick="App.openImageLightbox(this.src)" alt="Solution Diagram">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- No Questions Matched Banner (hidden) -->
+      <div id="prac-empty-state" class="hidden text-center py-12 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
+        <i data-lucide="search-x" class="w-12 h-12 text-slate-400 mx-auto mb-3"></i>
+        <h3 class="text-base font-bold text-slate-800 dark:text-slate-200">No questions found matching your filter</h3>
+        <p class="text-xs text-slate-500 mt-1">Try switching subjects or resetting filters.</p>
+        <button onclick="App.resetPracticeFilters()" class="mt-4 px-4 py-2 rounded-lg bg-blue-600 text-white text-xs font-semibold">Reset Filters</button>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------------
+         MODE 3: DOCUMENT & IMAGE SCANNER
+         --------------------------------------------------------- -->
+    <section id="view-scanner" class="mode-view hidden flex-1 max-w-6xl mx-auto w-full px-4 py-8 space-y-6">
+      
+      <!-- Scanner Hero & API Status Banner -->
+      <div class="bg-gradient-to-r from-purple-700 via-indigo-700 to-blue-700 rounded-2xl p-6 text-white shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-white/20 backdrop-blur-sm mb-1.5">Multimodal AI OCR</span>
+          <h1 class="text-2xl font-extrabold tracking-tight">JEE Document & Image Question Scanner</h1>
+          <p class="text-purple-100 text-xs sm:text-sm mt-1 max-w-2xl">
+            Drop any PDF question paper, textbook scan, or pasted screenshot. Extracts question stem, LaTeX math formulas, options, correct answers, and step-by-step solutions into your Question Bank.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="App.openApiKeyModal()" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-bold flex items-center gap-2 backdrop-blur-sm transition-colors">
+            <i data-lucide="key" class="w-4 h-4 text-amber-300"></i>
+            <span id="scanner-api-badge">Configure Gemini Key</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- File Dropzone & Paste Section -->
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4">
+        
+        <div id="scanner-dropzone" class="border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-500 rounded-2xl p-8 sm:p-12 text-center transition-all bg-slate-50/50 dark:bg-slate-800/30 cursor-pointer">
+          <input type="file" id="scanner-file-input" class="hidden" accept=".pdf,image/png,image/jpeg,image/webp">
+          
+          <div class="w-16 h-16 rounded-2xl bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto mb-4 shadow-xs">
+            <i data-lucide="file-up" class="w-8 h-8"></i>
+          </div>
+
+          <h3 class="text-base font-bold text-slate-800 dark:text-slate-200">
+            Drag & Drop your JEE PDF or Question Image here
+          </h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-md mx-auto">
+            Supports PDF exam papers, PNG, JPG, WEBP. You can also press <kbd class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 font-mono text-[10px]">Ctrl+V</kbd> anywhere to paste from clipboard!
+          </p>
+
+          <div class="mt-5 flex flex-wrap items-center justify-center gap-3">
+            <button type="button" onclick="document.getElementById('scanner-file-input').click()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs transition-colors">
+              Browse Files
+            </button>
+            <button type="button" onclick="App.triggerClipboardPaste()" class="px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs transition-colors flex items-center gap-1.5">
+              <i data-lucide="clipboard" class="w-3.5 h-3.5 text-purple-500"></i> Paste Screenshot
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick 1-Click Sample Testing Buttons -->
+        <div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between text-xs text-slate-500 gap-2">
+          <span class="font-medium">Test instantly with sample docs:</span>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="App.loadSamplePdfScan()" class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold flex items-center gap-1.5 transition-colors">
+              <i data-lucide="file-text" class="w-3.5 h-3.5 text-rose-500"></i>
+              <span>Sample JEE PDF Paper</span>
+            </button>
+            <button type="button" onclick="App.loadSampleImageScan()" class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold flex items-center gap-1.5 transition-colors">
+              <i data-lucide="image" class="w-3.5 h-3.5 text-emerald-500"></i>
+              <span>Sample Question Image</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scanning Progress & Animation Bar (Hidden by default) -->
+      <div id="scanner-progress-container" class="hidden bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-3">
+        <div class="flex items-center justify-between text-xs font-semibold">
+          <div class="flex items-center gap-2 text-slate-700 dark:text-slate-200">
+            <div class="spinner"></div>
+            <span id="scanner-progress-status">Analyzing document with Multimodal AI OCR...</span>
+          </div>
+          <span id="scanner-progress-percent" class="font-mono text-blue-600 dark:text-blue-400">45%</span>
+        </div>
+
+        <!-- Progress bar track -->
+        <div class="w-full h-2.5 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+          <div id="scanner-progress-bar" class="h-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 transition-all duration-300" style="width: 45%"></div>
+        </div>
+      </div>
+
+      <!-- Side-by-Side Review & Verification Staging Workbench -->
+      <div id="scanner-workbench" class="hidden space-y-4">
+        
+        <!-- Action Toolbar -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            <span class="text-sm font-bold text-slate-800 dark:text-slate-200">
+              Extracted Questions Staging (<span id="staged-count">0</span> detected)
+            </span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="App.addAllStagedQuestions()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs flex items-center gap-1.5 transition-colors">
+              <i data-lucide="check" class="w-4 h-4"></i> Add All to Question Bank
+            </button>
+            <button onclick="App.clearStagedQuestions()" class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold text-xs transition-colors">
+              Discard Staged
+            </button>
+          </div>
+        </div>
+
+        <!-- Split Layout: Document Preview on Left, Staged Question Cards on Right -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          
+          <!-- Document Preview Pane (5 Cols) -->
+          <div class="lg:col-span-5 bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-800 sticky top-20">
+            <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-100 dark:border-slate-800 text-xs font-bold text-slate-600 dark:text-slate-400">
+              <span class="flex items-center gap-1.5">
+                <i data-lucide="eye" class="w-3.5 h-3.5"></i> Document Preview
+              </span>
+              <div id="pdf-page-controls" class="hidden items-center gap-2">
+                <button onclick="App.scannerPdfPrevPage()" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800"><i data-lucide="chevron-left" class="w-3.5 h-3.5"></i></button>
+                <span id="pdf-page-indicator" class="font-mono text-[11px]">Page 1/1</span>
+                <button onclick="App.scannerPdfNextPage()" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800"><i data-lucide="chevron-right" class="w-3.5 h-3.5"></i></button>
+              </div>
+            </div>
+
+            <div class="overflow-auto max-h-[600px] rounded-lg bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-2 border border-slate-200 dark:border-slate-800">
+              <canvas id="scanner-pdf-canvas" class="max-w-full shadow-xs rounded hidden"></canvas>
+              <img id="scanner-image-preview" class="max-w-full max-h-[580px] object-contain rounded shadow-xs hidden" alt="Scanned Document">
+            </div>
+          </div>
+
+          <!-- Staged Question Cards & Live KaTeX Editor (7 Cols) -->
+          <div class="lg:col-span-7 space-y-4" id="staged-questions-container">
+            <!-- Dynamically populated staged question cards with editable fields & live math preview -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------------
+         MODE: DIRECT IMAGE QUESTION (NO AI SCAN NEEDED)
+         --------------------------------------------------------- -->
+    <section id="view-image-upload" class="mode-view hidden flex-1 max-w-5xl mx-auto w-full px-4 py-8 space-y-6">
+      
+      <!-- Banner -->
+      <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-blue-700 rounded-2xl p-6 text-white shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-white/20 backdrop-blur-sm mb-1.5">Direct Image Upload</span>
+          <h1 class="text-2xl font-extrabold tracking-tight">Add Question from Image Directly</h1>
+          <p class="text-emerald-100 text-xs sm:text-sm mt-1 max-w-2xl">
+            Upload or paste any question screenshot directly. Perfect for complex circuit diagrams, geometry problems, graphs, and textbook snapshots without needing OCR.
+          </p>
+        </div>
+        <div>
+          <button onclick="App.switchMode('bank')" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-bold flex items-center gap-2 backdrop-blur-sm transition-colors">
+            <i data-lucide="database" class="w-4 h-4"></i>
+            <span>View Question Bank</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Form Container -->
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-800 space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          <!-- Left Column (6 cols): Question Image Dropzone & Preview -->
+          <div class="lg:col-span-6 space-y-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2 flex items-center justify-between">
+                <span class="flex items-center gap-1.5"><i data-lucide="image" class="w-4 h-4 text-emerald-500"></i> Question Image (Required)</span>
+                <span class="text-[11px] text-slate-400 font-normal">PNG, JPG, WebP or Ctrl+V</span>
+              </label>
+
+              <!-- Drag & Drop / Click Dropzone -->
+              <div id="direct-image-dropzone" onclick="document.getElementById('direct-image-input').click()" class="border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-emerald-500 dark:hover:border-emerald-500 rounded-2xl p-6 text-center cursor-pointer transition-all bg-slate-50/50 dark:bg-slate-800/30 min-h-[240px] flex flex-col items-center justify-center relative overflow-hidden group">
+                <input type="file" id="direct-image-input" class="hidden" accept="image/*" onchange="App.handleDirectImageSelect(event)">
+                
+                <div id="direct-image-prompt" class="space-y-2">
+                  <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto shadow-xs">
+                    <i data-lucide="upload-cloud" class="w-6 h-6"></i>
+                  </div>
+                  <p class="text-xs font-bold text-slate-700 dark:text-slate-200">Click to upload question image or drag & drop</p>
+                  <p class="text-[11px] text-slate-400">or press <kbd class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 font-mono text-[10px]">Ctrl+V</kbd> to paste screenshot</p>
+                </div>
+
+                <!-- Preview image -->
+                <img id="direct-image-preview" class="hidden max-h-64 object-contain rounded-lg shadow-sm" alt="Question Image Preview">
+              </div>
+
+              <!-- Action buttons under image -->
+              <div id="direct-image-actions" class="hidden flex items-center justify-between pt-2 text-xs">
+                <span class="text-emerald-600 font-medium flex items-center gap-1"><i data-lucide="check" class="w-3.5 h-3.5"></i> Image attached</span>
+                <button type="button" onclick="App.clearDirectImage()" class="text-rose-600 hover:underline flex items-center gap-1 font-semibold">
+                  <i data-lucide="trash-2" class="w-3 h-3"></i> Remove Image
+                </button>
+              </div>
+            </div>
+
+            <!-- Optional Solution Image -->
+            <div class="pt-4 border-t border-slate-100 dark:border-slate-800">
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2 flex items-center justify-between">
+                <span class="flex items-center gap-1.5"><i data-lucide="file-check" class="w-4 h-4 text-blue-500"></i> Solution / Derivation Diagram (Optional)</span>
+                <span class="text-[11px] text-slate-400 font-normal">Step-by-step diagram</span>
+              </label>
+
+              <div id="direct-solution-image-dropzone" onclick="document.getElementById('direct-solution-image-input').click()" class="border border-dashed border-slate-300 dark:border-slate-700 hover:border-blue-500 rounded-xl p-4 text-center cursor-pointer transition-all bg-slate-50/30 dark:bg-slate-800/20 flex flex-col items-center justify-center">
+                <input type="file" id="direct-solution-image-input" class="hidden" accept="image/*" onchange="App.handleDirectSolutionImageSelect(event)">
+                <div id="direct-sol-prompt" class="flex items-center gap-2 text-xs text-slate-500">
+                  <i data-lucide="image-plus" class="w-4 h-4 text-slate-400"></i>
+                  <span>Attach solution diagram (optional)</span>
+                </div>
+                <img id="direct-sol-image-preview" class="hidden max-h-40 object-contain rounded-lg mt-2 shadow-xs" alt="Solution Image Preview">
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column (6 cols): Question Meta & Answer Key Picker -->
+          <div class="lg:col-span-6 space-y-4">
+            
+            <!-- Metadata: Subject & Chapter -->
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-500 mb-1">Subject</label>
+                <select id="direct-q-subject" class="w-full px-3 py-2 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+                  <option value="Physics">Physics</option>
+                  <option value="Chemistry">Chemistry</option>
+                  <option value="Mathematics">Mathematics</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-500 mb-1">Chapter / Topic</label>
+                <input type="text" id="direct-q-chapter" placeholder="e.g. Ray Optics" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+              </div>
+            </div>
+
+            <!-- Difficulty & Type -->
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-500 mb-1">Difficulty</label>
+                <select id="direct-q-difficulty" class="w-full px-3 py-2 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+                  <option value="JEE Main">JEE Main</option>
+                  <option value="JEE Advanced">JEE Advanced</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-500 mb-1">Question Type</label>
+                <select id="direct-q-type" onchange="App.onDirectTypeChange()" class="w-full px-3 py-2 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+                  <option value="single_choice">Single Choice (MCQ)</option>
+                  <option value="multiple_choice">Multiple Choice (Multi-Correct)</option>
+                  <option value="numerical">Numerical Answer</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Optional Question Text / Caption -->
+            <div>
+              <label class="block text-xs font-bold text-slate-500 mb-1">Question Caption / Statement (Optional if in image):</label>
+              <textarea id="direct-q-caption" rows="2" placeholder="e.g. Find the current through resistor R2 in the given circuit..." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"></textarea>
+            </div>
+
+            <!-- Answer Key Picker -->
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 space-y-2">
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                Select Correct Answer Key:
+              </label>
+
+              <!-- Single Choice (A, B, C, D pills) -->
+              <div id="direct-ans-single" class="grid grid-cols-4 gap-2">
+                <button type="button" onclick="App.setDirectSingleAnswer('A')" id="btn-direct-ans-A" class="direct-opt-btn active py-2 rounded-lg border text-xs font-bold text-center border-blue-600 bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300">Option A</button>
+                <button type="button" onclick="App.setDirectSingleAnswer('B')" id="btn-direct-ans-B" class="direct-opt-btn py-2 rounded-lg border text-xs font-bold text-center border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-slate-300">Option B</button>
+                <button type="button" onclick="App.setDirectSingleAnswer('C')" id="btn-direct-ans-C" class="direct-opt-btn py-2 rounded-lg border text-xs font-bold text-center border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-slate-300">Option C</button>
+                <button type="button" onclick="App.setDirectSingleAnswer('D')" id="btn-direct-ans-D" class="direct-opt-btn py-2 rounded-lg border text-xs font-bold text-center border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-slate-300">Option D</button>
+              </div>
+
+              <!-- Multiple Choice Checkbox pills (A, B, C, D) -->
+              <div id="direct-ans-multi" class="hidden grid grid-cols-4 gap-2">
+                <button type="button" onclick="App.toggleDirectMultiAnswer('A')" id="btn-direct-multi-A" class="direct-multi-btn py-2 rounded-lg border text-xs font-bold text-center border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300">Option A</button>
+                <button type="button" onclick="App.toggleDirectMultiAnswer('B')" id="btn-direct-multi-B" class="direct-multi-btn py-2 rounded-lg border text-xs font-bold text-center border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300">Option B</button>
+                <button type="button" onclick="App.toggleDirectMultiAnswer('C')" id="btn-direct-multi-C" class="direct-multi-btn py-2 rounded-lg border text-xs font-bold text-center border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300">Option C</button>
+                <button type="button" onclick="App.toggleDirectMultiAnswer('D')" id="btn-direct-multi-D" class="direct-multi-btn py-2 rounded-lg border text-xs font-bold text-center border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300">Option D</button>
+              </div>
+
+              <!-- Numerical Input -->
+              <div id="direct-ans-num" class="hidden pt-1">
+                <input type="number" step="any" id="direct-numerical-ans" placeholder="e.g. 15 or 4.5" class="w-full px-3 py-2 text-sm font-mono font-bold rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+              </div>
+            </div>
+
+            <!-- Explanation / Solution with Live Preview -->
+            <div>
+              <label class="block text-xs font-bold text-slate-500 mb-1">Explanation / Solution (LaTeX math supported):</label>
+              <textarea id="direct-q-expl" rows="3" placeholder="Step-by-step solution derivation with $$...$$ formulas" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono"></textarea>
+            </div>
+
+            <!-- Save Button -->
+            <div class="pt-3 flex items-center justify-end gap-3">
+              <button type="button" onclick="App.resetDirectImageForm()" class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100">
+                Reset
+              </button>
+              <button type="button" onclick="App.saveDirectImageQuestion()" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs shadow-md shadow-emerald-500/20 flex items-center gap-1.5 transition-all">
+                <i data-lucide="check" class="w-4 h-4"></i>
+                <span>Save Question to Bank</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------------
+         MODE 4: QUESTION BANK & MANAGER
+         --------------------------------------------------------- -->
+    <section id="view-bank" class="mode-view hidden flex-1 max-w-6xl mx-auto w-full px-4 py-8 space-y-6">
+      
+      <!-- Stats & Quick Actions Header -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Questions</span>
+            <span id="bank-stat-total" class="block text-2xl font-extrabold text-slate-900 dark:text-slate-100 mt-1">0</span>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center">
+            <i data-lucide="database" class="w-5 h-5"></i>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Physics</span>
+            <span id="bank-stat-physics" class="block text-2xl font-extrabold text-blue-600 dark:text-blue-400 mt-1">0</span>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center">
+            <i data-lucide="zap" class="w-5 h-5"></i>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Chemistry</span>
+            <span id="bank-stat-chemistry" class="block text-2xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1">0</span>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 flex items-center justify-center">
+            <i data-lucide="flask-conical" class="w-5 h-5"></i>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Mathematics</span>
+            <span id="bank-stat-math" class="block text-2xl font-extrabold text-purple-600 dark:text-purple-400 mt-1">0</span>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-900/30 text-purple-600 flex items-center justify-center">
+            <i data-lucide="sigma" class="w-5 h-5"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls & Search Toolbar -->
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          
+          <!-- Search Bar -->
+          <div class="relative flex-1">
+            <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <input type="text" id="bank-search-input" oninput="App.onBankSearch()" placeholder="Search questions by topic, formula, or keyword..." class="w-full pl-10 pr-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="App.openAddQuestionModal()" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs flex items-center gap-1.5 transition-colors">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Question
+            </button>
+            <button onclick="App.switchMode('image-upload')" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs shadow-xs flex items-center gap-1.5 transition-colors" title="Upload question screenshot directly">
+              <i data-lucide="image-plus" class="w-3.5 h-3.5"></i> Add Image Question
+            </button>
+            <button onclick="App.loadSampleQuestions()" class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs flex items-center gap-1.5 transition-colors">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-500"></i> Seed Samples
+            </button>
+            <button onclick="App.exportQuestionsJSON()" class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs flex items-center gap-1.5 transition-colors" title="Export Questions to JSON">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i> Export
+            </button>
+            <label class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs flex items-center gap-1.5 cursor-pointer transition-colors" title="Import Questions from JSON">
+              <i data-lucide="upload" class="w-3.5 h-3.5"></i> Import
+              <input type="file" id="bank-import-input" accept=".json" class="hidden" onchange="App.importQuestionsJSON(event)">
+            </label>
+          </div>
+        </div>
+
+        <!-- Filter Pills -->
+        <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
+          <span class="font-bold text-slate-400 mr-1">Filter:</span>
+          <button onclick="App.filterBankBySubject('all')" class="bank-pill active px-3 py-1 rounded-full font-semibold bg-blue-600 text-white" id="bank-pill-all">All</button>
+          <button onclick="App.filterBankBySubject('Physics')" class="bank-pill px-3 py-1 rounded-full font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200" id="bank-pill-phy">Physics</button>
+          <button onclick="App.filterBankBySubject('Chemistry')" class="bank-pill px-3 py-1 rounded-full font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200" id="bank-pill-chem">Chemistry</button>
+          <button onclick="App.filterBankBySubject('Mathematics')" class="bank-pill px-3 py-1 rounded-full font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200" id="bank-pill-math">Mathematics</button>
+        </div>
+      </div>
+
+      <!-- Question Cards List -->
+      <div id="bank-questions-list" class="space-y-4">
+        <!-- Dynamically rendered question cards -->
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------------
+         MODE 5: ANALYTICS & PERFORMANCE
+         --------------------------------------------------------- -->
+    <section id="view-analytics" class="mode-view hidden flex-1 max-w-6xl mx-auto w-full px-4 py-8 space-y-6">
+      
+      <!-- Top Analytics Overview -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div class="flex items-center justify-between text-slate-500 mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider">Tests Taken</span>
+            <i data-lucide="award" class="w-4 h-4 text-blue-500"></i>
+          </div>
+          <span id="ana-tests-count" class="text-3xl font-extrabold text-slate-900 dark:text-slate-100">0</span>
+          <span class="block text-[11px] text-slate-400 mt-1">CBT Mock Exams</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div class="flex items-center justify-between text-slate-500 mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider">Average Score</span>
+            <i data-lucide="trending-up" class="w-4 h-4 text-emerald-500"></i>
+          </div>
+          <span id="ana-avg-score" class="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">0%</span>
+          <span class="block text-[11px] text-slate-400 mt-1">Across all completed tests</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div class="flex items-center justify-between text-slate-500 mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider">Overall Accuracy</span>
+            <i data-lucide="target" class="w-4 h-4 text-purple-500"></i>
+          </div>
+          <span id="ana-accuracy" class="text-3xl font-extrabold text-purple-600 dark:text-purple-400">0%</span>
+          <span class="block text-[11px] text-slate-400 mt-1">Attempted vs Correct</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div class="flex items-center justify-between text-slate-500 mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider">Total Time</span>
+            <i data-lucide="clock" class="w-4 h-4 text-amber-500"></i>
+          </div>
+          <span id="ana-total-time" class="text-3xl font-extrabold text-amber-600 dark:text-amber-400">0h 0m</span>
+          <span class="block text-[11px] text-slate-400 mt-1">Time invested in prep</span>
+        </div>
+      </div>
+
+      <!-- Subject Performance Bars & Strengths -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Physics Card -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-blue-500"></span>
+              <h3 class="font-bold text-slate-900 dark:text-slate-100">Physics</h3>
+            </div>
+            <span id="ana-phy-acc" class="text-sm font-extrabold text-blue-600">0%</span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+            <div id="ana-phy-bar" class="h-full bg-blue-600 rounded-full" style="width: 0%"></div>
+          </div>
+          <div class="text-xs text-slate-500 space-y-1">
+            <div class="flex justify-between"><span>Attempted:</span> <span id="ana-phy-att" class="font-bold text-slate-700 dark:text-slate-300">0</span></div>
+            <div class="flex justify-between"><span>Accuracy:</span> <span id="ana-phy-cor" class="font-bold text-emerald-600">0%</span></div>
+          </div>
+        </div>
+
+        <!-- Chemistry Card -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+              <h3 class="font-bold text-slate-900 dark:text-slate-100">Chemistry</h3>
+            </div>
+            <span id="ana-chem-acc" class="text-sm font-extrabold text-emerald-600">0%</span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+            <div id="ana-chem-bar" class="h-full bg-emerald-600 rounded-full" style="width: 0%"></div>
+          </div>
+          <div class="text-xs text-slate-500 space-y-1">
+            <div class="flex justify-between"><span>Attempted:</span> <span id="ana-chem-att" class="font-bold text-slate-700 dark:text-slate-300">0</span></div>
+            <div class="flex justify-between"><span>Accuracy:</span> <span id="ana-chem-cor" class="font-bold text-emerald-600">0%</span></div>
+          </div>
+        </div>
+
+        <!-- Mathematics Card -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-purple-500"></span>
+              <h3 class="font-bold text-slate-900 dark:text-slate-100">Mathematics</h3>
+            </div>
+            <span id="ana-math-acc" class="text-sm font-extrabold text-purple-600">0%</span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+            <div id="ana-math-bar" class="h-full bg-purple-600 rounded-full" style="width: 0%"></div>
+          </div>
+          <div class="text-xs text-slate-500 space-y-1">
+            <div class="flex justify-between"><span>Attempted:</span> <span id="ana-math-att" class="font-bold text-slate-700 dark:text-slate-300">0</span></div>
+            <div class="flex justify-between"><span>Accuracy:</span> <span id="ana-math-cor" class="font-bold text-emerald-600">0%</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Test History Table -->
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+        <h3 class="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <i data-lucide="history" class="w-4 h-4 text-blue-600"></i>
+          <span>Exam Attempt History</span>
+        </h3>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead>
+              <tr class="border-b border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-500 uppercase">
+                <th class="py-2.5 px-3">Date</th>
+                <th class="py-2.5 px-3">Exam Pattern</th>
+                <th class="py-2.5 px-3">Score</th>
+                <th class="py-2.5 px-3">Percentage</th>
+                <th class="py-2.5 px-3">Accuracy</th>
+                <th class="py-2.5 px-3">Time</th>
+              </tr>
+            </thead>
+            <tbody id="ana-history-table-body" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
+              <!-- Dynamically populated history rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================
+       MODALS & DIALOGS
+       ========================================================= -->
+
+  <!-- Modal 1: Cloud & AI Settings (Gemini AI Key & Google Cloud Storage) -->
+  <div id="modal-apikey" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-5">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-orange-100 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 flex items-center justify-center">
+            <i data-lucide="cloud-cog" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-slate-900 dark:text-slate-100">AI & Cloud Settings</h3>
+            <p class="text-[11px] text-slate-400">Configure Gemini Multimodal AI & Google Cloud Storage</p>
+          </div>
+        </div>
+        <button onclick="App.closeApiKeyModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Settings Tabs: Gemini AI vs Google Cloud Storage -->
+      <div class="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-semibold">
+        <button type="button" onclick="App.switchCloudTab('gemini')" id="tab-btn-gemini" class="flex-1 py-1.5 rounded-lg bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-xs flex items-center justify-center gap-1.5 transition-all">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Google Gemini AI
+        </button>
+        <button type="button" onclick="App.switchCloudTab('gcs')" id="tab-btn-gcs" class="flex-1 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center justify-center gap-1.5 transition-all">
+          <i data-lucide="cloud" class="w-3.5 h-3.5"></i> Cloud Storage (GCS)
+        </button>
+      </div>
+
+      <!-- Tab 1: Gemini AI Key Configuration -->
+      <div id="tab-panel-gemini" class="space-y-4">
+        <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+          Powers Multimodal Document & Image OCR extraction. Get your key from <a href="https://aistudio.google.com/" target="_blank" class="text-blue-600 underline font-semibold">Google AI Studio</a>. Saved in browser storage & server environment.
+        </p>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Gemini API Key</label>
+          <div class="relative">
+            <input type="password" id="input-gemini-key" placeholder="AIzaSy..." class="w-full pl-3 pr-10 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-mono focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <button type="button" onclick="App.toggleApiKeyVisibility()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+              <i id="icon-toggle-key" data-lucide="eye" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
+          <button type="button" onclick="App.testApiKeyConnection()" id="btn-test-key" class="text-xs font-bold text-purple-600 hover:underline flex items-center gap-1">
+            <i data-lucide="zap" class="w-3.5 h-3.5"></i> Test Connection
+          </button>
+          <div class="flex items-center gap-2">
+            <button onclick="App.closeApiKeyModal()" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300">
+              Close
+            </button>
+            <button onclick="App.saveApiKey()" class="px-4 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold shadow-xs">
+              Save Key
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Google Cloud Storage (GCS) Configuration -->
+      <div id="tab-panel-gcs" class="hidden space-y-4">
+        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <div class="flex items-center gap-2 text-xs">
+            <span id="gcs-status-indicator" class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+            <span id="gcs-status-text" class="font-bold text-slate-700 dark:text-slate-300">GCS Not Configured</span>
+          </div>
+          <button type="button" onclick="App.syncWithGCS()" id="btn-gcs-sync" class="px-2.5 py-1 rounded-md bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 text-[11px] font-bold hover:bg-blue-100 flex items-center gap-1">
+            <i data-lucide="refresh-cw" class="w-3 h-3"></i> Sync Now
+          </button>
+        </div>
+
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="block font-bold text-slate-500 mb-1">GCS Bucket Name</label>
+            <input type="text" id="gcs-bucket-name" placeholder="e.g. my-jee-prep-bucket" class="w-full px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-500 mb-1">Google Cloud Project ID</label>
+            <input type="text" id="gcs-project-id" placeholder="e.g. jee-prep-production" class="w-full px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-500 mb-1">Service Account JSON Key (Paste JSON):</label>
+            <textarea id="gcs-credentials-json" rows="3" placeholder='{"type": "service_account", "project_id": "...", ...}' class="w-full px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-[11px]"></textarea>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
+          <button type="button" onclick="App.testGCSConnection()" id="btn-test-gcs" class="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1">
+            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Test GCS Status
+          </button>
+          <div class="flex items-center gap-2">
+            <button onclick="App.closeApiKeyModal()" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300">
+              Close
+            </button>
+            <button onclick="App.saveGCSConfig()" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs">
+              Save GCS Config
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Lightbox Modal for Question / Solution Diagrams -->
+  <div id="modal-image-lightbox" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md" onclick="App.closeImageLightbox()">
+    <div class="relative max-w-5xl max-h-[90vh] flex flex-col items-center justify-center" onclick="event.stopPropagation()">
+      <button onclick="App.closeImageLightbox()" class="absolute -top-12 right-0 p-2 text-white/80 hover:text-white rounded-full bg-white/10 hover:bg-white/20 transition-colors">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+      <img id="lightbox-image-src" class="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl border border-white/10" alt="Enlarged Diagram">
+    </div>
+  </div>
+
+  <!-- Modal 2: Submit Exam Confirmation Dialog -->
+  <div id="modal-submit-confirm" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200 dark:border-slate-800 space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center font-bold">
+          <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="text-base font-bold text-slate-900 dark:text-slate-100">Submit Examination?</h3>
+          <p class="text-xs text-slate-500">Are you sure you want to end and submit this test?</p>
+        </div>
+      </div>
+
+      <!-- Current Palette Snapshot -->
+      <div id="submit-summary-box" class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 text-xs space-y-1.5 font-medium">
+        <!-- Answered, Not Answered, Marked counts -->
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-2">
+        <button onclick="App.closeSubmitModal()" class="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+          Continue Test
+        </button>
+        <button onclick="App.executeSubmitExam()" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs">
+          Yes, Submit Test
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Add / Edit Question Modal (with Split KaTeX Live Preview) -->
+  <div id="modal-edit-question" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-4xl w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 max-h-[90vh] flex flex-col">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+        <h3 class="text-base font-bold text-slate-900 dark:text-slate-100" id="modal-q-title">Add New JEE Question</h3>
+        <button onclick="App.closeQuestionModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto py-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Left: Form Inputs -->
+        <div class="space-y-3">
+          <input type="hidden" id="edit-q-id">
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-500 mb-1">Subject</label>
+              <select id="edit-q-subject" class="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+                <option value="Physics">Physics</option>
+                <option value="Chemistry">Chemistry</option>
+                <option value="Mathematics">Mathematics</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-500 mb-1">Chapter</label>
+              <input type="text" id="edit-q-chapter" placeholder="e.g. Thermodynamics" class="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-500 mb-1">Difficulty</label>
+              <select id="edit-q-difficulty" class="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+                <option value="JEE Main">JEE Main</option>
+                <option value="JEE Advanced">JEE Advanced</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-500 mb-1">Type</label>
+              <select id="edit-q-type" onchange="App.onModalTypeChange()" class="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+                <option value="single_choice">Single Choice</option>
+                <option value="multiple_choice">Multiple Choice</option>
+                <option value="numerical">Numerical Value</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-500 mb-1">Question (supports LaTeX $...$ & $$...$$)</label>
+            <textarea id="edit-q-text" rows="3" oninput="App.updateLivePreview()" placeholder="A particle of mass $m$..." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono"></textarea>
+          </div>
+
+          <!-- Options Fields (MCQ) -->
+          <div id="edit-mcq-options" class="space-y-2">
+            <label class="block text-xs font-bold text-slate-500">Options</label>
+            <div class="space-y-1.5">
+              <input type="text" id="edit-opt-0" oninput="App.updateLivePreview()" placeholder="Option A LaTeX" class="w-full px-2.5 py-1.5 text-xs rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono">
+              <input type="text" id="edit-opt-1" oninput="App.updateLivePreview()" placeholder="Option B LaTeX" class="w-full px-2.5 py-1.5 text-xs rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono">
+              <input type="text" id="edit-opt-2" oninput="App.updateLivePreview()" placeholder="Option C LaTeX" class="w-full px-2.5 py-1.5 text-xs rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono">
+              <input type="text" id="edit-opt-3" oninput="App.updateLivePreview()" placeholder="Option D LaTeX" class="w-full px-2.5 py-1.5 text-xs rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-500 mb-1">Correct Answer (e.g. B or 1, or A,C,D or 4.5)</label>
+            <input type="text" id="edit-q-correct" placeholder="e.g. B" class="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-500 mb-1">Step-by-Step Explanation / Solution</label>
+            <textarea id="edit-q-expl" rows="3" oninput="App.updateLivePreview()" placeholder="Derivation with $$...$$" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono"></textarea>
+          </div>
+        </div>
+
+        <!-- Right: Live KaTeX Preview -->
+        <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col">
+          <span class="text-xs font-bold text-blue-600 dark:text-blue-400 mb-2 flex items-center gap-1.5">
+            <i data-lucide="eye" class="w-3.5 h-3.5"></i> Live KaTeX Render Preview
+          </span>
+          <div class="flex-1 overflow-y-auto space-y-4">
+            <div id="preview-q-text" class="text-sm font-medium text-slate-800 dark:text-slate-200 leading-relaxed">
+              (Preview question text will appear here)
+            </div>
+            <div id="preview-q-options" class="space-y-1.5 text-xs">
+              <!-- Options Preview -->
+            </div>
+            <div id="preview-q-expl" class="text-xs text-slate-600 dark:text-slate-400 border-t border-slate-200 dark:border-slate-800 pt-3">
+              <!-- Explanation Preview -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-end gap-2">
+        <button onclick="App.closeQuestionModal()" class="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300">
+          Cancel
+        </button>
+        <button onclick="App.saveQuestionFromModal()" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs">
+          Save Question
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- Application Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/pdf-extractor.js"></script>
+  <script src="js/scanner.js"></script>
+  <script src="js/quiz-engine.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    // Initialize Lucide icons on load
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    });
+  </script>
+</body>
+</html>
