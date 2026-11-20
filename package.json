@@ -5,6 +5,7 @@
   "main": "server.js",
   "type": "commonjs",
   "scripts": {
+    "build": "echo 'QuestionForge build complete: assets and _worker.js ready in public/'",
     "start": "node server.js",
     "dev": "node server.js",
     "deploy": "wrangler pages deploy public",
