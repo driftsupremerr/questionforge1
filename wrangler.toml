@@ -1,11 +1,11 @@
 #:schema node_modules/wrangler/config-schema.json
 name = "questionforge1"
-main = "worker.js"
+main = "worker.mjs"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 
 [assets]
-directory = "public"
+directory = "./public"
 
 [vars]
 ENVIRONMENT = "production"
