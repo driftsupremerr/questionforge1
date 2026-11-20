@@ -1,5 +1,5 @@
 {
-  "name": "questionforge",
+  "name": "questionforge1",
   "version": "2.0.0",
   "description": "Modern AI-Powered JEE Main & Advanced Exam Preparation Platform featuring authentic NTA CBT Simulation, Multimodal Document OCR Scanner, KaTeX mathematical typesetting, and Cloudflare Edge deployment.",
   "main": "server.js",
