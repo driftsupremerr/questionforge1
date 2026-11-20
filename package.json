@@ -8,8 +8,8 @@
     "build": "echo 'QuestionForge build complete: assets and _worker.js ready in public/'",
     "start": "node server.js",
     "dev": "node server.js",
-    "deploy": "wrangler pages deploy public",
-    "deploy:ci": "wrangler pages deploy public --project-name=questionforge"
+    "deploy": "wrangler deploy",
+    "deploy:ci": "wrangler deploy"
   },
   "keywords": [
     "jee",
